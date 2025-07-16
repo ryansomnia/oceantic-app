@@ -23,7 +23,7 @@ export default function Testimonials() {
     <section id="testimonials" className="py-20 bg-soft-gray text-dark-charcoal">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-4xl font-bold text-oceanic-blue mb-12 relative pb-4">
-          What Our <span className="text-aqua-accent">Participants Say</span>
+         Apa kata mereka <span className="text-aqua-accent">tentang Kami</span>
           <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-aqua-accent rounded-full"></span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
