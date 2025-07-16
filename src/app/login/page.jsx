@@ -104,7 +104,7 @@ export default function LoginPage() {
 
   return (
     // Container utama halaman dengan latar belakang gradient elegan
-    <div className="min-h-screen bg-gradient-to-br from-oceanic-blue to-aqua-accent flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-sky-200  flex items-center justify-center p-4 sm:p-6 lg:p-8">
       {/* Container untuk layout dua kolom (gambar + form) */}
       <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Kolom Kiri: Gambar */}
@@ -123,7 +123,7 @@ export default function LoginPage() {
           <div>
             {/* Judul form */}
             <h2 className="mt-2 text-center text-4xl font-extrabold text-dark-charcoal">
-              Sign In <span className="text-oceanic-blue">OCEANETIC</span>
+              Sign In <span className="text-sky-600">OCEANETIC</span>
             </h2>
           </div>
 
@@ -151,7 +151,7 @@ export default function LoginPage() {
                 type="text"
                 autoComplete="username"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue sm:text-base"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-sky-600 sm:text-base"
                 placeholder="Username atau Email"
                 value={formData.username}
                 onChange={handleChange}
@@ -163,7 +163,7 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue sm:text-base"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-sky-600 sm:text-base"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
@@ -172,7 +172,7 @@ export default function LoginPage() {
             {/* Link "Belum punya akun?" dipindahkan ke sini, di bawah input */}
             <p className="mt-4 text-center text-base text-gray-600">
               Belum punya akun?{' '}
-              <Link href="/register" className="font-semibold text-aqua-accent hover:text-oceanic-blue transition duration-200">
+              <Link href="/register" className="font-semibold text-sky-bg-sky-300 hover:text-sky-600 transition duration-200">
                 Daftar di sini
               </Link>
             </p>
@@ -181,7 +181,7 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-oceanic-blue hover:bg-aqua-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aqua-accent transition duration-300 transform hover:scale-105"
+                className="w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-sky-600 hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-bg-sky-300 transition duration-300 transform hover:scale-105"
               >
                 Masuk
               </button>
@@ -189,7 +189,7 @@ export default function LoginPage() {
 
             {/* Opsi lupa password (opsional) - dikomentari sesuai permintaan */}
             {/* <div className="text-sm text-center">
-              <Link href="/forgot-password" className="font-medium text-gray-600 hover:text-oceanic-blue">
+              <Link href="/forgot-password" className="font-medium text-gray-600 hover:text-sky-600">
                 Lupa Password?
               </Link>
             </div> */}
