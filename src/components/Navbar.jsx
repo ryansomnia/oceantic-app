@@ -5,7 +5,7 @@ export default function Navbar() {
     <nav className="bg-white p-4 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className=" text-black text-3xl font-bold">
-          OCEANETIC
+          OCEANTIC
         </Link>
         <ul className="flex space-x-8 text-lg">
           <li>

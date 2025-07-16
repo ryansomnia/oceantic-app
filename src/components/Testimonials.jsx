@@ -3,17 +3,17 @@ import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa'; // Anda perlu mengin
 export default function Testimonials() {
   const testimonials = [
     {
-      quote: "OCEANETIC organized an incredible event! Everything was seamless, and the atmosphere was fantastic. I highly recommend them for any swimming competition.",
+      quote: "OCEANTIC organized an incredible event! Everything was seamless, and the atmosphere was fantastic. I highly recommend them for any swimming competition.",
       author: "Sarah L.",
       title: "Competitive Swimmer"
     },
     {
-      quote: "The attention to detail and participant experience provided by OCEANETIC is unmatched. Our team always looks forward to their events.",
+      quote: "The attention to detail and participant experience provided by OCEANTIC is unmatched. Our team always looks forward to their events.",
       author: "Coach Mark R.",
       title: "Swim Team Coach"
     },
     {
-      quote: "As a parent, I appreciate the professional and supportive environment OCEANETIC creates. My kids absolutely love participating!",
+      quote: "As a parent, I appreciate the professional and supportive environment OCEANTIC creates. My kids absolutely love participating!",
       author: "Jessica P.",
       title: "Parent"
     },

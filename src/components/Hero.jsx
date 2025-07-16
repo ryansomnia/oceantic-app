@@ -7,7 +7,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-oceanic-blue opacity-70"></div>
         <div className="relative z-10 text-white p-6 md:p-8">
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 drop-shadow-lg">
-            Dive into Excellence with <br /><span className="text-aqua-accent">OCEANETIC</span>
+            Dive into Excellence with <br /><span className="text-aqua-accent">OCEANTIC</span>
           </h1>
           <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">
             Organizing world-class swimming events and unforgettable experiences for athletes and enthusiasts.

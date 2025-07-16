@@ -3,21 +3,21 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 export const metadata = {
-  title: 'OCEANETIC - Elite Swimming Event Organizer',
+  title: 'OCEANTIC - Elite Swimming Event Organizer',
   description: 'Your premier partner for professional swimming events and competitions. Dive into excellence!',
-  keywords: 'swimming events, swimming organizer, swim competition, aquatic events, OCEANETIC',
-  author: 'OCEANETIC Team',
+  keywords: 'swimming events, swimming organizer, swim competition, aquatic events, OCEANTIC',
+  author: 'OCEANTIC Team',
   openGraph: {
-    title: 'OCEANETIC - Elite Swimming Event Organizer',
+    title: 'OCEANTIC - Elite Swimming Event Organizer',
     description: 'Your premier partner for professional swimming events and competitions. Dive into excellence!',
-    url: 'https://www.your-oceanetic-domain.com', // Ganti dengan domain Anda
-    siteName: 'OCEANETIC',
+    url: 'https://www.your-oceantic-domain.com', // Ganti dengan domain Anda
+    siteName: 'OCEANTIC',
     images: [
       {
-        url: 'https://www.your-oceanetic-domain.com/images/og-image.jpg', // Ganti dengan path gambar OG Anda
+        url: 'https://www.your-oceantic-domain.com/images/og-image.jpg', // Ganti dengan path gambar OG Anda
         width: 1200,
         height: 630,
-        alt: 'OCEANETIC Swimming Events',
+        alt: 'OCEANTIC Swimming Events',
       },
     ],
     locale: 'en_US',
