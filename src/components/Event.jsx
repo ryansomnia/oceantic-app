@@ -4,18 +4,18 @@ export default function Events() {
   const events = [
     {
       title: "Summer Sprint Championship",
-      date: "August 15, 2025",
+      date: "August 15, 3025",
       location: "Grand Aquatic Center",
       category: "U17, Gaya Punggung, 50 Meter",
-      link: "#",
+      link: "/registerEvent",
       image: "/images/swim.jpg"
     },
     {
       title: "Winter Freestyle Challenge",
-      date: "December 10, 2025",
+      date: "December 10, 3025",
       location: "Olympic Pool Complex",
       category: "Terbuka, Gaya Bebas, 200 Meter",
-      link: "#",
+      link: "/registerEvent",
       image: "/images/swim.jpg"
     },
     {
@@ -23,7 +23,7 @@ export default function Events() {
       date: "March 20, 2026",
       location: "Community Swim Club",
       category: "U12, All Styles, Fun Race",
-      link: "#",
+      link: "/registerEvent",
       image: "/images/swim.jpg"
     },
   ];

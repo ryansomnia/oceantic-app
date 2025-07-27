@@ -14,7 +14,7 @@ export const metadata = {
     siteName: 'OCEANTIC',
     images: [
       {
-        url: 'https://www.your-oceantic-domain.com/images/og-image.jpg', // Ganti dengan path gambar OG Anda
+        url: '/images/logo.png', // Ganti dengan path gambar OG Anda
         width: 1200,
         height: 630,
         alt: 'OCEANTIC Swimming Events',

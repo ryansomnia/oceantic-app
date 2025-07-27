@@ -18,15 +18,6 @@ export default function LoginPage() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Dummy Data Login
-  const DUMMY_USERNAME = 'ryansomnia';
-  const DUMMY_PASSWORD = 'lzhyto2371';
-  const DUMMY_FULLNAME = 'Heriyanto Sitorus';
-  const DUMMY_EMAIL = 'laskarimmanuel@gmail.com';
-  const DUMMY_NOHP = '087781018141';
-  const DUMMY_GENDER = 'Pria';
-
-
   // Fungsi untuk menangani perubahan pada input form
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,33 +39,12 @@ export default function LoginPage() {
       return;
     }
 
-    // --- LOGIKA DUMMY LOGIN ---
-    if (formData.username === DUMMY_USERNAME && formData.password === DUMMY_PASSWORD) {
-      // Login Berhasil (Simulasi)
-      setMessage('Login Berhasil! Anda akan diarahkan ke Dashboard...');
-      console.log('Dummy Login successful for:', formData.username);
-
-      // Simpan status login dan username dummy ke localStorage (untuk Navbar)
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', DUMMY_FULLNAME); // Menggunakan nama lengkap sebagai username di Navbar
-
-      // Redirect ke halaman utama atau dashboard setelah 2 detik
-      setTimeout(() => {
-        router.push('/my-profile'); // Ganti dengan '/dashboard' atau rute lain yang sesuai
-        // window.location.reload(); // <--- BARIS INI DIHAPUS
-      }, 2000);
-    } else {
-      // Login Gagal (Simulasi)
-      setError('Login Gagal. Username atau Password salah.');
-      console.error('Dummy Login failed for:', formData.username);
-    }
-    // --- AKHIR LOGIKA DUMMY LOGIN ---
-
-    // Catatan: Bagian fetch API di bawah ini telah dihapus karena menggunakan dummy login.
-    // Jika Anda ingin kembali ke integrasi backend, Anda bisa mengaktifkan kembali kode fetch ini.
-    /*
+    // --- LOGIKA LOGIN DENGAN BACKEND ASLI ---
     try {
-      const response = await fetch('/api/login', {
+      // Pastikan URL ini sesuai dengan endpoint backend Anda yang di-deploy (misalnya Vercel)
+      // Untuk pengembangan lokal: 'http://localhost:5000/oceantic/v1/login'
+      // Untuk deployment: 'https://your-backend-url.vercel.app/oceantic/v1/login'
+      const response = await fetch('http://localhost:3025/oceantic/v1/login', { // Menggunakan port 5000 sesuai server.js terbaru
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,11 +54,34 @@ export default function LoginPage() {
 
       if (response.ok) {
         const data = await response.json();
-        setMessage('Login Berhasil! Anda akan diarahkan ke Dashboard...');
+        setMessage('Login Berhasil! Anda akan diarahkan...');
         console.log('Login successful:', data);
-        localStorage.setItem('authToken', data.token); // Contoh: simpan token
+
+        // Simpan token dan informasi user ke localStorage
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('isLoggedIn', 'true'); // Untuk simulasi status login di Navbar
+        localStorage.setItem('username', data.user.fullname); // Menggunakan nama lengkap dari backend untuk Navbar
+        localStorage.setItem('userRole', data.user.role); // <-- SIMPAN PERAN PENGGUNA DI LOCALSTORAGE
+        localStorage.setItem('userId', data.user.id); // <-- SIMPAN PERAN PENGGUNA DI LOCALSTORAGE
+
+        // Tentukan halaman pengalihan berdasarkan peran pengguna
+        let redirectPath = '/'; // Default untuk non-admin
+        console.log('====================================');
+        console.log(data.user);
+        console.log('====================================');
+        if (data.user.role === 'admin') {
+               
+
+          redirectPath = '/admin/dashboard'; // Arahkan admin ke dashboard admin
+          window.location.href = redirectPath;
+        }else if (data.user.role === 'member') {
+          window.location.href = redirectPath;
+        }else{
+          window.location.href = redirectPath;
+        }
+
         setTimeout(() => {
-          router.push('/');
+          router.push(redirectPath); // Mengarahkan ke path yang ditentukan
         }, 2000);
       } else {
         const errorData = await response.json();
@@ -99,12 +92,12 @@ export default function LoginPage() {
       setError('Terjadi kesalahan jaringan atau server. Coba lagi nanti.');
       console.error('Network or server error:', err);
     }
-    */
+    // --- AKHIR LOGIKA LOGIN DENGAN BACKEND ASLI ---
   };
 
   return (
     // Container utama halaman dengan latar belakang gradient elegan
-    <div className="min-h-screen bg-gradient-to-br from-sky-200  flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-oceanic-blue to-sky-3bg-sky-400 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       {/* Container untuk layout dua kolom (gambar + form) */}
       <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Kolom Kiri: Gambar */}
@@ -123,7 +116,7 @@ export default function LoginPage() {
           <div>
             {/* Judul form */}
             <h2 className="mt-2 text-center text-4xl font-extrabold text-dark-charcoal">
-              Sign In <span className="text-sky-600">OCEANETIC</span>
+              Sign In <span className="text-oceanic-blue">OCEANETIC</span> {/* Warna disesuaikan */}
             </h2>
           </div>
 
@@ -151,7 +144,7 @@ export default function LoginPage() {
                 type="text"
                 autoComplete="username"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-sky-600 sm:text-base"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue sm:text-base" /* Warna disesuaikan */
                 placeholder="Username atau Email"
                 value={formData.username}
                 onChange={handleChange}
@@ -163,7 +156,7 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-sky-600 sm:text-base"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue sm:text-base" /* Warna disesuaikan */
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
@@ -172,7 +165,7 @@ export default function LoginPage() {
             {/* Link "Belum punya akun?" dipindahkan ke sini, di bawah input */}
             <p className="mt-4 text-center text-base text-gray-600">
               Belum punya akun?{' '}
-              <Link href="/register" className="font-semibold text-sky-bg-sky-300 hover:text-sky-600 transition duration-200">
+              <Link href="/register" className="font-semibold text-sky-3bg-sky-400 hover:text-oceanic-blue transition duration-200"> {/* Warna disesuaikan */}
                 Daftar di sini
               </Link>
             </p>
@@ -181,7 +174,7 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-sky-600 hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-bg-sky-300 transition duration-300 transform hover:scale-105"
+                className="w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-sky-300 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-3bg-sky-400 transition duration-300 transform hover:scale-105" /* Warna disesuaikan */
               >
                 Masuk
               </button>
@@ -189,7 +182,7 @@ export default function LoginPage() {
 
             {/* Opsi lupa password (opsional) - dikomentari sesuai permintaan */}
             {/* <div className="text-sm text-center">
-              <Link href="/forgot-password" className="font-medium text-gray-600 hover:text-sky-600">
+              <Link href="/forgot-password" className="font-medium text-gray-600 hover:text-oceanic-blue">
                 Lupa Password?
               </Link>
             </div> */}

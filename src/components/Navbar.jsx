@@ -34,7 +34,7 @@ export default function Navbar() {
       setUsername('');
       setIsMobileMenuOpen(false); // Tutup menu mobile saat logout
       // Opsional: Redirect ke halaman utama setelah logout
-      // window.location.href = '/';
+      window.location.href = '/';
     } else {
       // Login (contoh)
       localStorage.setItem('isLoggedIn', 'true');
@@ -53,6 +53,9 @@ export default function Navbar() {
   return (
     <nav className="bg-white p-4 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center relative">
+                    {/* <img src="/images/logo.png" alt="OCEANTIC Team" className="mt-10 rounded-lg shadow-lg mx-auto h-1" /> */}
+
+        {/* <img src='/images/swim.png'/> */}
         <Link href="/" className="text-black text-3xl font-bold">
           OCEANETIC
         </Link>
@@ -112,7 +115,7 @@ export default function Navbar() {
                 </Link>
               </li>
               <li>
-                <Link href="/my-profile" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
+                <Link href="/myProfile" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
                   My Profile
                 </Link>
               </li>
