@@ -25,7 +25,7 @@ export default function MyProfilePage() {
   });
 
   // URL dasar untuk backend API Anda
-  const API_BASE_URL = 'http://localhost:3025/oceantic/v1'; // Ganti dengan URL backend Vercel Anda di produksi
+  const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1'; // Ganti dengan URL backend Vercel Anda di produksi
 
   // Efek untuk memeriksa autentikasi dan mengambil data profil
   useEffect(() => {
