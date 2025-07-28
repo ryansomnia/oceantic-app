@@ -42,7 +42,7 @@ export default function RegisterSwimmerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // URL dasar untuk backend API Anda
-  const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
+  const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
 
   // Efek untuk memeriksa autentikasi dan mengambil daftar event
   useEffect(() => {

@@ -20,20 +20,20 @@ export default function Testimonials() {
   ];
 
   return (
-    <section id="testimonials" className="py-20 bg-soft-gray text-dark-charcoal">
+    <section id="testimonials" className="py-20 bg-sky-600 text-dark-charcoal">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-4xl font-bold text-oceanic-blue mb-12 relative pb-4">
-         Apa kata mereka <span className="text-aqua-accent">tentang Kami</span>
+        <h2 className="text-4xl font-bold text-white mb-12 relative pb-4">
+         Apa kata mereka <span className="text-white">tentang Kami</span>
           <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-aqua-accent rounded-full"></span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="bg-white p-8 rounded-lg shadow-md flex flex-col justify-between items-center text-center">
-              <FaQuoteLeft className="text-warm-gold text-3xl mb-4" />
+              <FaQuoteLeft className="text-sky-300 text-3xl mb-4" />
               <p className="text-lg italic mb-6 leading-relaxed">"{testimonial.quote}"</p>
-              <FaQuoteRight className="text-warm-gold text-3xl mt-4" />
+              <FaQuoteRight className="text-sky-300 text-3xl mt-4" />
               <div className="mt-6">
-                <p className="text-xl font-semibold text-oceanic-blue">{testimonial.author}</p>
+                <p className="text-xl font-semibold text-sky-600">{testimonial.author}</p>
                 <p className="text-md text-gray-600">{testimonial.title}</p>
               </div>
             </div>
