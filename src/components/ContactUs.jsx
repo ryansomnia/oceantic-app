@@ -81,19 +81,19 @@ export default function ContactUs() {
           <div>
             <h2 className="text-xl font-light tracking-widest uppercase mb-4">Contact Us</h2>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight uppercase">
-              Great Things<br />Start From A<br />Simple Beginning
+              Wujudkan Mimpimu<br />Untuk menjadi<br />Pemenang
             </h1>
           </div>
           <div className="mt-12 text-sm font-light leading-relaxed">
             <p className="mb-4">
-              <span className="font-bold">PT Selaras Inti Dinamika</span><br />
+              <span className="font-bold">PT Oceantic</span><br />
               Jalan Community Raya No. 9, Cluster Mahoni<br />
               Komplek Taman Royal 1 Poris<br />
               Tangerang, Banten 15119 Indonesia
             </p>
             <p>
-              P: +62 815 8190 899<br />
-              E: info(at)synchro.id
+              P: +62 895-3650-89206<br />
+              E: business@oceanticsports.com
             </p>
           </div>
         </div>
