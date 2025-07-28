@@ -170,7 +170,7 @@ export default function ContactUs() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-sky-400 text-white font-semibold py-3 px-8 rounded-full hover:bg-sky-600 transition-colors duration-300 text-lg"
+              className="bg-white text-black font-semibold py-3 px-8 rounded-full  transition-colors duration-300 text-lg"
             >
               {isSubmitting ? 'Sending Message...' : 'Send Message'}
             </button>

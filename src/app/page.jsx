@@ -18,7 +18,7 @@ export default function HomePage() {
       {/* <Achievements /> */}
       <Testimonials />
 
-      {/* <ContactUs /> */}
+      <ContactUs />
     </>
   );
 }
