@@ -95,7 +95,7 @@ export default function RegisterPage() {
         <div className="md:w-1/2 relative h-64 md:h-auto"> {/* h-64 untuk mobile, md:h-auto untuk desktop */}
           <Image
             src="/images/swim.jpg" // Ganti dengan path gambar registrasi Anda
-            alt="Register for OCEANETIC Events"
+            alt="Register for OCEANTIC Events"
             layout="fill" // Gambar akan mengisi div parent
             objectFit="cover" // Gambar akan menutupi area div, mungkin terpotong
             className="rounded-t-2xl md:rounded-l-2xl md:rounded-t-none" // Sudut membulat sesuai layout
@@ -107,7 +107,7 @@ export default function RegisterPage() {
           <div>
             {/* Judul form */}
             <h2 className="mt-2 text-center text-4xl font-extrabold text-dark-charcoal">
-              Daftar Akun <span className="text-oceanic-blue">OCEANETIC</span>
+              Daftar Akun <span className="text-oceanic-blue">OCEANTIC</span>
             </h2>
             {/* Link ke halaman login */}
            

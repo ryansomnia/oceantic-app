@@ -104,7 +104,7 @@ export default function LoginPage() {
         <div className="md:w-1/2 relative h-64 md:h-auto">
           <Image
             src="/images/swim.jpg" // Ganti dengan path gambar login Anda
-            alt="Login to OCEANETIC"
+            alt="Login to OCEANTIC"
             layout="fill"
             objectFit="cover"
             className="rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
@@ -116,7 +116,7 @@ export default function LoginPage() {
           <div>
             {/* Judul form */}
             <h2 className="mt-2 text-center text-4xl font-extrabold text-dark-charcoal">
-              Sign In <span className="text-oceanic-blue">OCEANETIC</span> {/* Warna disesuaikan */}
+              Sign In <span className="text-oceanic-blue">OCEANTIC</span> {/* Warna disesuaikan */}
             </h2>
           </div>
 

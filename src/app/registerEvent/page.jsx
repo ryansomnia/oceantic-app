@@ -272,7 +272,7 @@ export default function RegisterSwimmerPage() {
     <div className="min-h-screen bg-gradient-to-br from-oceanic-blue to-aqua-accent p-8 flex items-center justify-center">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-8 sm:p-10 lg:p-12">
         <h1 className="text-4xl font-extrabold text-dark-charcoal mb-8 text-center">
-          Daftar Lomba Renang <span className="text-oceanic-blue">OCEANETIC</span>
+          Daftar Lomba Renang <span className="text-oceanic-blue">OCEANTIC</span>
         </h1>
 
         {/* Pesan sukses dan error div dihapus karena diganti SweetAlert */}

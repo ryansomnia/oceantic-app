@@ -292,7 +292,7 @@ export default function AdminDashboardPage() {
     <div className="min-h-screen bg-gradient-to-br from-oceanic-blue to-aqua-accent p-8">
       <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
         <h1 className="text-4xl font-extrabold text-dark-charcoal mb-8 text-center">
-          Dashboard Admin <span className="text-oceanic-blue">OCEANETIC</span>
+          Dashboard Admin <span className="text-oceanic-blue">OCEANTIC</span>
         </h1>
 
         {/* Navigasi Tab */}

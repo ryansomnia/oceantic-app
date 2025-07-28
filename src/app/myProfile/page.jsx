@@ -180,7 +180,7 @@ console.log('====================================');
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-8 sm:p-10 lg:p-12">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-extrabold text-dark-charcoal">
-            My Profile <span className="text-oceanic-blue">OCEANETIC</span>
+            My Profile <span className="text-oceanic-blue">OCEANTIC</span>
           </h1>
           <button
             onClick={handleLogout}
