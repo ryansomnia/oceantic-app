@@ -5,17 +5,21 @@ import Achievements from '../components/Achievements';
 import Testimonials from '../components/Testimonials';
 import ContactUs from '../components/ContactUs';
 import EventSection from '@/components/EventSection';
+import Sponsorships from '@/components/Sponsorship';
 
 export default function HomePage() {
   return (
     <>
       <Hero />
       <AboutUs />
+
       <Events />
-      <EventSection/>
-      <Achievements />
+      <EventSection />
+      {/* <Achievements /> */}
+      <Sponsorships />
       <Testimonials />
-      <ContactUs />
+
+      {/* <ContactUs /> */}
     </>
   );
 }
