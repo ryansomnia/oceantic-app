@@ -53,11 +53,11 @@ export default function Navbar() {
   return (
     <nav className="bg-white p-4 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center relative">
-                    {/* <img src="/images/logo.png" alt="OCEANTIC Team" className="mt-10 rounded-lg shadow-lg mx-auto h-1" /> */}
+        {/* <img src="/images/logo.png" alt="OCEANTIC Team" className="mt-10 rounded-lg shadow-lg mx-auto h-1" /> */}
 
         {/* <img src='/images/swim.png'/> */}
         <Link href="/" className="text-black text-3xl font-bold">
-          OCEANETIC
+          OCEANTIC
         </Link>
 
         {/* Tombol Hamburger Menu (hanya terlihat di mobile) */}
@@ -168,12 +168,12 @@ export default function Navbar() {
               </li>
               <li>
                 <Link href="/login" className="bg-sky-300 hover:bg-sky-600 rounded-md text-white  transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
-                Login
+                  Login
                 </Link>
               </li>
               <li>
                 <Link href="/register" className="border border-sky-900 rounded-md text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
-                Register
+                  Register
                 </Link>
               </li>
             </>
