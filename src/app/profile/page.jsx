@@ -1,11 +1,12 @@
 'use client'; // Menandakan ini adalah Client Component
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+// useRouter dan Link dari next/navigation dihapus
+// untuk mengatasi error kompilasi di luar lingkungan Next.js.
+import { UserCircle2, Mail, Phone, Activity, LogOut, Edit, Save, XCircle, Loader2, CheckCircle2 } from 'lucide-react';
 
 export default function MyProfilePage() {
-  const router = useRouter();
+  // const router = useRouter(); <-- Dihapus
 
   // State untuk data profil user
   const [userData, setUserData] = useState(null);
@@ -16,12 +17,11 @@ export default function MyProfilePage() {
 
   // State untuk form data saat mengedit
   const [formData, setFormData] = useState({
-    username: '', // Ditambahkan ke formData
+    username: '',
     fullname: '',
     email: '',
     nohp: '',
     gender: '',
-    // role biasanya tidak diizinkan diubah langsung oleh user
   });
 
   // URL dasar untuk backend API Anda
@@ -33,43 +33,42 @@ export default function MyProfilePage() {
       const token = localStorage.getItem('authToken');
       const idUser = localStorage.getItem('userId');
 
-console.log('====================================');
-console.log(idUser);
-console.log('====================================');
-      if (!token) {
-        // Jika tidak ada token, arahkan ke halaman login
-        router.push('/login');
+      if (!token || !idUser) {
+        // Mengganti router.push dengan window.location.href
+        window.location.href = '/login';
         return;
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/users/me`, { // <-- Endpoint baru yang perlu Anda buat di backend
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({id:idUser})
+          body: JSON.stringify({ id: idUser })
         });
 
         if (response.ok) {
           const data = await response.json();
+          console.log('====================================');
+          console.log(data);
+          console.log('====================================');
           setUserData(data);
           // Isi formData dengan data yang diambil untuk mode edit
           setFormData({
-            username: data.username, // Menggunakan username dari data
+            username: data.username,
             fullname: data.fullname,
             email: data.email,
             nohp: data.nohp,
             gender: data.gender,
           });
         } else {
-          // Jika token tidak valid atau ada error lain dari backend
           const errorData = await response.json();
           setError(errorData.message || 'Gagal memuat profil pengguna.');
-          // Mungkin token kadaluarsa, arahkan kembali ke login
           localStorage.clear();
-          router.push('/login');
+          // Mengganti router.push dengan window.location.href
+          window.location.href = '/login';
         }
       } catch (err) {
         console.error('Error fetching user profile:', err);
@@ -80,7 +79,7 @@ console.log('====================================');
     };
 
     fetchUserProfile();
-  }, [router]);
+  }, []); // Dependensi [router] dihapus
 
   // Handler perubahan input form saat mode edit
   const handleChange = (e) => {
@@ -101,12 +100,13 @@ console.log('====================================');
     const token = localStorage.getItem('authToken');
     if (!token) {
       setError('Sesi Anda telah berakhir. Silakan login kembali.');
-      router.push('/login');
+      // Mengganti router.push dengan window.location.href
+      window.location.href = '/login';
       return;
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/me`, { // <-- Endpoint PUT baru di backend
+      const response = await fetch(`${API_BASE_URL}/users/me`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -117,9 +117,9 @@ console.log('====================================');
 
       if (response.ok) {
         const updatedData = await response.json();
-        setUserData(updatedData.user); // Asumsi backend merespons dengan user data yang diperbarui
+        setUserData(updatedData.user);
         setMessage('Profil berhasil diperbarui!');
-        setIsEditing(false); // Keluar dari mode edit
+        setIsEditing(false);
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Gagal memperbarui profil.');
@@ -133,25 +133,41 @@ console.log('====================================');
   };
 
   // Handler untuk logout
-  const handleLogout = () => {
-    localStorage.clear(); // Hapus semua item dari localStorage
-    router.push('/login'); // Arahkan ke halaman login
-  };
+
+  const getFormInputClasses = (isEditingMode) =>
+    `w-full px-4 py-3 border rounded-lg transition-colors duration-200 ${
+      isEditingMode
+        ? 'bg-white text-gray-900 border-gray-300 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue'
+        : 'bg-gray-100 text-gray-800 border-gray-200 cursor-not-allowed'
+    }`;
+  
+  const getLabelClasses = `flex items-center text-sm font-medium text-gray-700 mb-1`;
+
+  const DetailItem = ({ icon, label, value }) => (
+    <div className="flex items-center space-x-3 text-gray-700">
+      {icon}
+      <div>
+        <div className="text-sm text-gray-500">{label}</div>
+        <div className="font-semibold text-gray-800">{value}</div>
+      </div>
+    </div>
+  );
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-oceanic-blue to-aqua-accent text-white text-xl">
-        Memuat Profil Anda...
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-oceanic-blue to-aqua-accent text-white">
+        <Loader2 className="h-12 w-12 animate-spin mr-3" />
+        <p className="text-xl font-semibold">Memuat Profil Anda...</p>
       </div>
     );
   }
 
-  if (error && !userData) { // Tampilkan error hanya jika tidak ada data sama sekali
+  if (error && !userData) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-oceanic-blue to-aqua-accent p-8 text-white">
         <p className="text-red-300 text-lg mb-4">{error}</p>
         <button
-          onClick={() => router.push('/login')}
+          onClick={() => window.location.href = '/login'} // <-- Mengganti router.push
           className="bg-white text-oceanic-blue px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-200"
         >
           Kembali ke Login
@@ -160,13 +176,12 @@ console.log('====================================');
     );
   }
 
-  // Jika tidak ada user data setelah loading, mungkin ada masalah token
   if (!userData) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-oceanic-blue to-aqua-accent p-8 text-white">
         <p className="text-red-300 text-lg mb-4">Anda tidak memiliki akses atau sesi telah berakhir.</p>
         <button
-          onClick={() => router.push('/login')}
+          onClick={() => window.location.href = '/login'} // <-- Mengganti router.push
           className="bg-white text-oceanic-blue px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-200"
         >
           Login
@@ -176,62 +191,60 @@ console.log('====================================');
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-oceanic-blue to-aqua-accent p-8 flex items-center justify-center">
-      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-8 sm:p-10 lg:p-12">
+    <div className="min-h-screen bg-gradient-to-br from-oceanic-blue to-aqua-accent p-4 sm:p-8 md:p-12 flex items-center justify-center font-sans">
+      <div className="max-w-4xl w-full bg-white rounded-3xl shadow-2xl p-6 sm:p-10 lg:p-12 relative">
+        
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-extrabold text-dark-charcoal">
-            My Profile <span className="text-oceanic-blue">OCEANTIC</span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">
+            My Profile
           </h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-600 transition duration-200"
-          >
-            Logout
-          </button>
+         
         </div>
 
         {message && (
-          <div className="bg-green-50 text-green-700 px-5 py-3 rounded-lg border border-green-200 mb-4" role="alert">
+          <div className="bg-green-100 text-green-700 px-5 py-3 rounded-xl border border-green-200 mb-4 flex items-center space-x-2">
+            <CheckCircle2 className="h-5 w-5" />
             <p className="font-medium text-sm">{message}</p>
           </div>
         )}
         {error && (
-          <div className="bg-red-50 text-red-700 px-5 py-3 rounded-lg border border-red-200 mb-4" role="alert">
+          <div className="bg-red-100 text-red-700 px-5 py-3 rounded-xl border border-red-200 mb-4 flex items-center space-x-2">
+            <XCircle className="h-5 w-5" />
             <p className="font-medium text-sm">{error}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Username (read-only) */}
+            {/* Username */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+              <label htmlFor="username" className={getLabelClasses}><UserCircle2 className="h-5 w-5 mr-2" />Username</label>
               <input
                 id="username"
                 name="username"
                 type="text"
-                value={isEditing ? formData.username : userData.username} // Menggunakan formData.username saat edit
-                readOnly={!isEditing} // Read-only saat tidak edit
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${isEditing ? 'bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue' : 'bg-gray-100 text-gray-800 cursor-not-allowed'}`}
+                value={isEditing ? formData.username : userData.username}
+                readOnly={!isEditing}
+                className={getFormInputClasses(isEditing)}
               />
             </div>
 
             {/* Role (read-only) */}
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+              <label htmlFor="role" className={getLabelClasses}><UserCircle2 className="h-5 w-5 mr-2" />Role</label>
               <input
                 id="role"
                 name="role"
                 type="text"
                 value={userData.role}
                 readOnly
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 cursor-not-allowed"
+                className={getFormInputClasses(false)}
               />
             </div>
 
             {/* Full Name */}
             <div>
-              <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+              <label htmlFor="fullname" className={getLabelClasses}><UserCircle2 className="h-5 w-5 mr-2" />Nama Lengkap</label>
               <input
                 id="fullname"
                 name="fullname"
@@ -240,13 +253,13 @@ console.log('====================================');
                 onChange={handleChange}
                 readOnly={!isEditing}
                 required
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${isEditing ? 'bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue' : 'bg-gray-100 text-gray-800 cursor-not-allowed'}`}
+                className={getFormInputClasses(isEditing)}
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label htmlFor="email" className={getLabelClasses}><Mail className="h-5 w-5 mr-2" />Email</label>
               <input
                 id="email"
                 name="email"
@@ -255,13 +268,13 @@ console.log('====================================');
                 onChange={handleChange}
                 readOnly={!isEditing}
                 required
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${isEditing ? 'bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue' : 'bg-gray-100 text-gray-800 cursor-not-allowed'}`}
+                className={getFormInputClasses(isEditing)}
               />
             </div>
 
             {/* No HP */}
             <div>
-              <label htmlFor="nohp" className="block text-sm font-medium text-gray-700 mb-1">Nomor HP</label>
+              <label htmlFor="nohp" className={getLabelClasses}><Phone className="h-5 w-5 mr-2" />Nomor HP</label>
               <input
                 id="nohp"
                 name="nohp"
@@ -270,13 +283,13 @@ console.log('====================================');
                 onChange={handleChange}
                 readOnly={!isEditing}
                 required
-                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${isEditing ? 'bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue' : 'bg-gray-100 text-gray-800 cursor-not-allowed'}`}
+                className={getFormInputClasses(isEditing)}
               />
             </div>
 
             {/* Gender */}
             <div>
-              <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+              <label htmlFor="gender" className={getLabelClasses}><Activity className="h-5 w-5 mr-2" />Jenis Kelamin</label>
               {isEditing ? (
                 <select
                   id="gender"
@@ -284,21 +297,20 @@ console.log('====================================');
                   value={formData.gender}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue"
+                  className={getFormInputClasses(true)}
                 >
                   <option value="">Pilih Jenis Kelamin</option>
                   <option value="Laki-laki">Laki-laki</option>
                   <option value="Perempuan">Perempuan</option>
-                  {/* Tambahkan opsi lain jika ada di DB Anda */}
                 </select>
               ) : (
                 <input
                   id="gender-display"
-                  name="gender-display"
+                  name="gender"
                   type="text"
                   value={userData.gender}
                   readOnly
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 cursor-not-allowed"
+                  className={getFormInputClasses(false)}
                 />
               )}
             </div>
@@ -311,25 +323,31 @@ console.log('====================================');
                   type="button"
                   onClick={() => {
                     setIsEditing(false);
-                    setFormData({ // Reset form data ke data awal user
-                      username: userData.username, // Reset username juga
+                    setFormData({
+                      username: userData.username,
                       fullname: userData.fullname,
                       email: userData.email,
                       nohp: userData.nohp,
                       gender: userData.gender,
                     });
-                    setError(null); // Clear error messages
-                    setMessage(null); // Clear success messages
+                    setError(null);
+                    setMessage(null);
                   }}
-                  className="px-6 py-3 border border-gray-300 rounded-lg text-lg font-semibold text-dark-charcoal hover:bg-gray-50 transition duration-200"
+                  className="flex items-center px-6 py-3 rounded-full text-lg font-semibold text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors duration-200"
                 >
+                  <XCircle className="h-5 w-5 mr-2" />
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 border border-transparent text-lg font-semibold rounded-lg text-white bg-oceanic-blue hover:bg-aqua-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aqua-accent transition duration-300"
+                  className="flex items-center px-6 py-3 rounded-full text-lg font-semibold text-white bg-oceanic-blue hover:bg-aqua-accent transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oceanic-blue"
                   disabled={loading}
                 >
+                  {loading ? (
+                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="h-5 w-5 mr-2" />
+                  )}
                   {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
                 </button>
               </>
@@ -337,8 +355,9 @@ console.log('====================================');
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="px-6 py-3 border border-transparent text-lg font-semibold rounded-lg text-white bg-aqua-accent hover:bg-oceanic-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oceanic-blue transition duration-300"
+                className="flex items-center px-6 py-3 rounded-full text-lg font-semibold text-white bg-sky-300 hover:bg-sky-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600"
               >
+                <Edit className="h-5 w-5 mr-2" />
                 Edit Profil
               </button>
             )}

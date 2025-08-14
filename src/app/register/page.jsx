@@ -12,7 +12,7 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-    role: 'peserta', // Role default untuk pengguna baru
+    role: 'member', // Role default untuk pengguna baru
     fullname: '',
     gender: '',
     nohp: '',
@@ -57,7 +57,7 @@ export default function RegisterPage() {
     // Simulasi pengiriman data ke API backend
     try {
       // Ganti URL ini dengan endpoint API registrasi Anda yang sebenarnya
-      const response = await fetch('/api/register', {
+      const response = await fetch('http://localhost:3025/oceantic/v1/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,8 +4,8 @@ import Events from '../components/Event';
 import Achievements from '../components/Achievements';
 import Testimonials from '../components/Testimonials';
 import ContactUs from '../components/ContactUs';
-import EventSection from '@/components/EventSection';
-import Value from '@/components/Value';
+import EventSection from '../components/EventSection';
+import Value from '../components/Value';
 
 export default function HomePage() {
   return (

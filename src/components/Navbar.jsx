@@ -107,26 +107,33 @@ export default function Navbar() {
             // Tampilan jika sudah login
             <>
               <li>
-                <span className="text-black py-2 px-3 inline-block">Halo, {username}!</span>
+                <span className="bg-amber-300 text-black rounded-xl py-2 px-3 inline-block">Halo, {username}!</span>
               </li>
               <li>
-                <Link href="#events" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
-                  Events
+                <Link href="/registerEvent" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
+                  Registrasi
                 </Link>
               </li>
+              
               <li>
-                <Link href="/myProfile" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
-                  My Profile
+                <Link href="/statusPayment" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
+                  Status Payment
+                </Link>
+                </li>
+              <li>
+                <Link href="/bukuAcara" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
+                  Buku Acara
                 </Link>
               </li>
-              <li>
+            
+              {/* <li>
                 <Link href="/my-achievement" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
                   My Achievement
                 </Link>
-              </li>
-              <li>
-                <Link href="/my-data" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
-                  My Data
+              </li> */}
+           <li>
+                <Link href="/profile" className="text-black hover:text-sky-300 transition duration-300 py-2 px-3 inline-block w-full text-center" onClick={handleNavLinkClick}>
+                  Profil
                 </Link>
               </li>
               <li>

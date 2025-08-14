@@ -3,58 +3,63 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2'; // Import SweetAlert2 untuk notifikasi yang lebih baik
 
 export default function RegisterSwimmerPage() {
   const router = useRouter();
 
-  // State untuk data yang akan di-fetch
+  // State untuk data yang akan di-fetch dari API
   const [events, setEvents] = useState([]);
-  const [allCategories, setAllCategories] = useState([]); // Menyimpan semua kategori (termasuk filter)
+  const [allCategories, setAllCategories] = useState([]); // Menyimpan semua kategori yang tersedia untuk event yang dipilih
 
   // State untuk form data pendaftaran
   const [formData, setFormData] = useState({
-    user_id: '', // Akan diisi dari token JWT pengguna yang login
+    user_id: '',
     event_id: '',
     full_name: '',
     date_of_birth: '',
     gender: '',
     email: '',
-    phone_number: '', // No HP Peserta
-    club_name: '', // Perwakilan
-    stroke_category: '', // Contoh: 'Bebas', 'Punggung', 'Dada'
-    age_category: '',    // Contoh: 'KU I (16-18 Tahun)', 'KU II (14-15 Tahun)'
-    distance_category: '', // Contoh: '25m', '50m', '100m'
-    jenis_renang: '',    // <--- Ditambahkan kembali: Jenis Lomba (Renang/Polo Air)
+    phone_number: '',
+    club_name: '',
+    stroke_category: '',
+    age_category: '',
+    distance_category: '',
+    jenis_renang: '',
     emergency_contact_name: '',
-    emergency_contact_phone: '', // No HP Pendamping
-    // payment_status: 'Pending', // Default status pembayaran - DIHAPUS
+    emergency_contact_phone: '',
+    payment_status: 'Pending', // Menambahkan kembali payment_status sesuai dengan curl request
     parent_consent: false,
     rules_consent: false,
   });
 
-  // State baru untuk file foto pembayaran dan dokumen pendukung
+  // State untuk file foto pembayaran dan dokumen pendukung
   const [paymentPhoto, setPaymentPhoto] = useState(null);
-  const [supportingDocument, setSupportingDocument] = useState(null); // State baru untuk dokumen pendukung
+  const [supportingDocument, setSupportingDocument] = useState(null);
 
-  // State untuk UI feedback (tidak lagi digunakan untuk pesan, hanya loading/submitting)
+  // State untuk UI feedback (loading/submitting)
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // URL dasar untuk backend API Anda
-  const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
+  const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
 
-  // Efek untuk memeriksa autentikasi dan mengambil daftar event
+  // Efek untuk mengambil daftar event saat komponen dimuat
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
     const userRole = localStorage.getItem('userRole');
 
     if (!token || !userId || userRole !== 'member') {
+
+      // Jika pengguna tidak terautentikasi, alihkan ke halaman login
       router.push('/login');
       return;
     }
-
+console.log('============hhh========================');
+console.log(userRole);
+console.log('====================================');
+    // Set user_id dari local storage ke formData
     setFormData(prev => ({ ...prev, user_id: userId }));
 
     const fetchEvents = async () => {
@@ -64,7 +69,14 @@ export default function RegisterSwimmerPage() {
           throw new Error('Gagal memuat daftar event.');
         }
         const data = await response.json();
-        setEvents(data);
+        
+        // --- BAGIAN PERBAIKAN: setEvents sekarang menggunakan data.data ---
+        if (data.code === 200 && Array.isArray(data.data)) {
+           setEvents(data.data);
+        } else {
+           throw new Error(data.message || 'Format data event tidak valid.');
+        }
+       
       } catch (err) {
         console.error('Error fetching events:', err);
         Swal.fire('Error', 'Gagal memuat daftar event. Silakan coba lagi.', 'error');
@@ -87,14 +99,25 @@ export default function RegisterSwimmerPage() {
             throw new Error('Gagal memuat kategori.');
           }
           const data = await response.json();
-          setAllCategories(data); // Simpan semua kategori dari backend
+          console.log('===========================ssss=========');
+          console.log(data);
+          console.log('====================================');
+          
+          // --- BAGIAN PERBAIKAN: setAllCategories sekarang menggunakan data.data ---
+          if (data.code === 200 && Array.isArray(data.data)) {
+            setAllCategories(data.data);
+          } else {
+            setAllCategories([]);
+             throw new Error(data.message || 'Format data kategori tidak valid.');
+          }
+          
           // Reset kategori yang dipilih saat event berubah
           setFormData(prev => ({
             ...prev,
             stroke_category: '',
             age_category: '',
             distance_category: '',
-            jenis_renang: '', // Reset jenis_renang juga
+            jenis_renang: '',
           }));
         } catch (err) {
           console.error('Error fetching categories:', err);
@@ -105,6 +128,7 @@ export default function RegisterSwimmerPage() {
       };
       fetchCategories();
     } else {
+      // Reset kategori jika tidak ada event yang dipilih
       setAllCategories([]);
       setFormData(prev => ({
         ...prev,
@@ -126,7 +150,7 @@ export default function RegisterSwimmerPage() {
     }));
   };
 
-  // Handler perubahan file input (untuk foto pembayaran dan dokumen pendukung)
+  // Handler perubahan file input
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (name === 'payment_photo') {
@@ -150,7 +174,7 @@ export default function RegisterSwimmerPage() {
       return;
     }
 
-    // Validasi tambahan untuk kategori tunggal dan jenis renang
+    // Validasi form
     if (!formData.event_id || !formData.stroke_category || !formData.age_category || !formData.distance_category || !formData.jenis_renang) {
       Swal.fire('Input Tidak Lengkap', 'Harap pilih Event, Gaya, Kategori Usia, Jarak Lomba, dan Jenis Lomba.', 'warning');
       setIsSubmitting(false);
@@ -161,14 +185,11 @@ export default function RegisterSwimmerPage() {
         setIsSubmitting(false);
         return;
     }
-    // Validasi bukti pembayaran (sekarang selalu wajib jika ada fieldnya)
     if (!paymentPhoto) {
         Swal.fire('Bukti Pembayaran', 'Foto bukti pembayaran wajib diunggah.', 'warning');
         setIsSubmitting(false);
         return;
     }
-
-    // Validasi scan akte kelahiran
     if (!supportingDocument) {
       Swal.fire('Dokumen Diperlukan', 'Scan Akte Kelahiran wajib diunggah.', 'warning');
       setIsSubmitting(false);
@@ -182,19 +203,14 @@ export default function RegisterSwimmerPage() {
 
       // Tambahkan semua field teks dari formData
       for (const key in formData) {
+        // FormData akan mengkonversi boolean menjadi string ("true"/"false"), ini sesuai dengan contoh curl.
         dataToSend.append(key, formData[key]);
       }
       
-      // Karena payment_status tidak ada di formData lagi, tambahkan secara manual jika diperlukan
-      // Anda bisa menentukan status pembayaran default di backend jika tidak ada di frontend
-      // Misalnya: dataToSend.append('payment_status', 'Pending');
-
-
-      // Tambahkan file foto pembayaran jika ada
+      // Tambahkan file foto pembayaran dan dokumen pendukung
       if (paymentPhoto) {
         dataToSend.append('payment_photo', paymentPhoto);
       }
-      // Tambahkan file dokumen pendukung jika ada
       if (supportingDocument) {
         dataToSend.append('supporting_document', supportingDocument);
       }
@@ -208,8 +224,9 @@ export default function RegisterSwimmerPage() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        await response.json();
         Swal.fire('Berhasil!', 'Pendaftaran berhasil! Anda akan menerima konfirmasi via email.', 'success');
+        
         // Reset form setelah sukses
         setFormData({
             user_id: localStorage.getItem('userId'),
@@ -223,17 +240,17 @@ export default function RegisterSwimmerPage() {
             stroke_category: '',
             age_category: '',
             distance_category: '',
-            jenis_renang: '', // Reset jenis_renang
+            jenis_renang: '',
             emergency_contact_name: '',
             emergency_contact_phone: '',
-            // payment_status: 'Pending', // Reset juga jika tidak ada
+            payment_status: 'Pending',
             parent_consent: false,
             rules_consent: false,
         });
         setAllCategories([]);
         setPaymentPhoto(null);
         setSupportingDocument(null);
-        // Reset input file secara manual karena React tidak langsung meresetnya
+        // Reset input file secara manual
         if (document.getElementById('payment_photo')) {
             document.getElementById('payment_photo').value = '';
         }
@@ -275,18 +292,6 @@ export default function RegisterSwimmerPage() {
           Daftar Lomba Renang <span className="text-oceanic-blue">OCEANTIC</span>
         </h1>
 
-        {/* Pesan sukses dan error div dihapus karena diganti SweetAlert */}
-        {/* {message && (
-          <div className="bg-green-50 text-green-700 px-5 py-3 rounded-lg border border-green-200 mb-4" role="alert">
-            <p className="font-medium text-sm">{message}</p>
-          </div>
-        )}
-        {error && (
-          <div className="bg-red-50 text-red-700 px-5 py-3 rounded-lg border border-red-200 mb-4" role="alert">
-            <p className="font-medium text-sm">{error}</p>
-          </div>
-        )} */}
-
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Bagian Pemilihan Event */}
           <div>
@@ -321,7 +326,6 @@ export default function RegisterSwimmerPage() {
                 <option value="">Pilih Jenis Kelamin</option>
                 <option value="Laki-laki">Laki-laki</option>
                 <option value="Perempuan">Perempuan</option>
-                <option value="Lainnya">Lainnya</option>
               </select>
             </div>
             <div>
@@ -343,7 +347,7 @@ export default function RegisterSwimmerPage() {
            
           </div>
 
-          {/* Bagian Pilihan Kategori Lomba (Sekarang Dropdown Tunggal) */}
+          {/* Bagian Pilihan Kategori Lomba */}
           {formData.event_id && (
             <>
               <h2 className="text-2xl font-bold text-dark-charcoal mt-8 mb-4">Pilihan Kategori Lomba</h2>
@@ -423,8 +427,8 @@ export default function RegisterSwimmerPage() {
             </>
           )}
 
-          {/* Bagian Kontak Darurat & Kesehatan */}
-          <h2 className="text-2xl font-bold text-dark-charcoal mt-8 mb-4">Kontak Darurat & Kesehatan</h2>
+          {/* Bagian Kontak Darurat */}
+          <h2 className="text-2xl font-bold text-dark-charcoal mt-8 mb-4">Kontak Darurat</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-gray-700 mb-1">Nama Kontak Darurat <span className="text-red-500">*</span></label>
@@ -434,10 +438,9 @@ export default function RegisterSwimmerPage() {
               <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon Pendamping <span className="text-red-500">*</span></label>
               <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" value={formData.emergency_contact_phone} onChange={handleChange} required className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-oceanic-blue focus:border-oceanic-blue" placeholder="081234567890" />
             </div>
-            
           </div>
 
-          {/* Bagian Dokumen Pendukung dan Pembayaran (Bersamaan) */}
+          {/* Bagian Dokumen Pendukung dan Pembayaran */}
           <h2 className="text-2xl font-bold text-dark-charcoal mt-8 mb-4">Dokumen & Pembayaran</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Upload Scan Akte Kelahiran */}
@@ -513,11 +516,14 @@ export default function RegisterSwimmerPage() {
           <div className="mt-8">
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-oceanic-blue hover:bg-aqua-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aqua-accent transition duration-300 transform hover:scale-105"
+              className="w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-sky-300 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 transition duration-300 transform hover:scale-105"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Mendaftar...' : 'Daftar Sekarang'}
             </button>
+          </div>
+          <div className="text-center mt-4">
+            <Link href="/dashboard" className="text-oceanic-blue hover:underline">Kembali ke Dashboard</Link>
           </div>
         </form>
       </div>
