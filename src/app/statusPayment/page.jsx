@@ -47,25 +47,52 @@ const StatusPayment = () => {
 
   const fetchPaymentStatus = async () => {
     const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-
+    console.log('================userId====================');
+    console.log(userId);
+    console.log('====================================');
+  
     if (!userId) {
       setError('ID pengguna tidak ditemukan. Silakan login kembali.');
       setIsLoading(false);
       window.location.href = '/login'; 
       return;
     }
-
+  
     try {
-      const response = await fetch(`${API_BASE_URL}/getStatusPaymentById/${userId}`);
+      // Ambil swimmer_registration.id dari user
+      const regRes = await fetch(`${API_BASE_URL}/registrations/getRegistrationByUserId/${userId}`);
+      if (!regRes.ok) throw new Error('Gagal ambil registrasi user');
+  
+      const regData = await regRes.json();
+      if (regData.code !== 200 || !regData.data) {
+        setError('Tidak ada registrasi ditemukan.');
+        setIsLoading(false);
+        return;
+      }
+  
+      const swimmerRegId = regData.data.id;
+      console.log('==================vswimmerRegId==================');
+      console.log(swimmerRegId);
+      console.log('====================================');
+  
+      // Panggil API status pembayaran berdasarkan swimmer_registration.id
+      const response = await fetch(`${API_BASE_URL}/getStatusPaymentById/${swimmerRegId}`);
       if (response.ok) {
         const data = await response.json();
         if (data.detail && data.detail.length > 0) {
+          console.log('====================================');
+          console.log(data);
+          console.log('====================================');
           const payment = data.detail[0];
+          console.log('====================================');
+          console.log(payment);
+          console.log('====================================');
           setPaymentDetails({
             id: payment.id,
             title: payment.title,
             fullName: payment.full_name,
             status: payment.payment_status,
+            totalFee: payment.total_fee ?? 0, // ✅ kalau null/undefined -> jadi 0
             paymentPhotoUrl: payment.payment_photo_url === 'null' ? null : payment.payment_photo_url,
           });
           setPaymentStatus(payment.payment_status);
@@ -84,6 +111,7 @@ const StatusPayment = () => {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchPaymentStatus();
@@ -98,6 +126,9 @@ const StatusPayment = () => {
   };
 
   const handleUploadProof = async () => {
+
+    const token = localStorage.getItem('authToken');
+
     if (!selectedFile) {
       setUploadMessage('Silakan pilih file bukti pembayaran terlebih dahulu.');
       return;
@@ -107,13 +138,17 @@ const StatusPayment = () => {
     setUploadMessage('Mengunggah bukti pembayaran...');
   
     const formData = new FormData();
-    formData.append('id', paymentDetails?.id);
-    formData.append('image', selectedFile);
-  
+    formData.append('registration_id', paymentDetails?.id);
+    formData.append('payment_photo', selectedFile);
+ 
     try {
-      const response = await fetch(`${API_BASE_URL}/uploadPaymentProof`, {
+      const response = await fetch(`${API_BASE_URL}/uploadPayment`, {
         method: 'POST',
-        body: formData
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+
       });
   
       const text = await response.text();
@@ -213,10 +248,16 @@ const StatusPayment = () => {
               </h2>
               {paymentDetails && (
                 <div className="space-y-4 text-left">
-                  <DetailItem label="Judul Event" value={paymentDetails.title} />
-                  <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
-                  <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
-                </div>
+                <DetailItem label="Judul Event" value={paymentDetails.title} />
+                <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
+                <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
+                <DetailItem 
+  label="Total Biaya" 
+  value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`} 
+/>
+              </div>
+              
+               
               )}
             </div>
           </div>
