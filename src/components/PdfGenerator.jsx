@@ -29,7 +29,7 @@ const EventBookGenerator = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:3025/oceantic/v1/events/getAllEventsOpen');
+      const response = await fetch('https://api.oceanticsports.com/oceantic/v1/events/getAllEventsOpen');
       if (!response.ok) {
         throw new Error('Gagal mengambil daftar acara dari API.');
       }
@@ -67,7 +67,7 @@ const EventBookGenerator = () => {
     // Endpoint untuk membuat PDF
     // Perbaikan: Menggunakan port 3001 untuk generate-event-book-pdf,
     // yang konsisten dengan kesalahan sebelumnya dan kemungkinan lokasi server yang benar.
-    const apiUrl = 'http://localhost:3025/generate-event-book-pdf';
+    const apiUrl = 'https://api.oceanticsports.com/generate-event-book-pdf';
 
     try {
       const response = await fetch(apiUrl, {

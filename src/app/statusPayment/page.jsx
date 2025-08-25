@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
-const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
+const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
 
 const StatusPayment = () => {
   const [paymentDetails, setPaymentDetails] = useState(null);

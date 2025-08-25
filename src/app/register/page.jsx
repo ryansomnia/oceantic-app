@@ -57,7 +57,7 @@ export default function RegisterPage() {
     // Simulasi pengiriman data ke API backend
     try {
       // Ganti URL ini dengan endpoint API registrasi Anda yang sebenarnya
-      const response = await fetch('http://localhost:3025/oceantic/v1/register', {
+      const response = await fetch('https://api.oceanticsports.com/oceantic/v1/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
