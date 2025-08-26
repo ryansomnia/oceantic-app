@@ -7,6 +7,8 @@ import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
 const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
+const FILE_BASE_URL = "https://api.oceanticsports.com";
+
 
 const StatusPayment = () => {
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -93,9 +95,9 @@ const StatusPayment = () => {
             fullName: payment.full_name,
             status: payment.payment_status,
             totalFee: payment.total_fee ?? 0, // ✅ kalau null/undefined -> jadi 0
-            paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${API_BASE_URL}${payment.payment_photo_url}`): null, });
+            paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null, });
           setPaymentStatus(payment.payment_status);
-          setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null'? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${API_BASE_URL}${payment.payment_photo_url}`): null);
+          setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null'? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null);
         } else {
           setError('Tidak ada data pembayaran yang ditemukan.');
         }
