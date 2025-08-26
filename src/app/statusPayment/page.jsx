@@ -93,10 +93,9 @@ const StatusPayment = () => {
             fullName: payment.full_name,
             status: payment.payment_status,
             totalFee: payment.total_fee ?? 0, // ✅ kalau null/undefined -> jadi 0
-            paymentPhotoUrl: payment.payment_photo_url === 'null' ? null : payment.payment_photo_url,
-          });
+            paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${API_BASE_URL}${payment.payment_photo_url}`): null, });
           setPaymentStatus(payment.payment_status);
-          setPaymentPhotoUrl(payment.payment_photo_url === 'null' ? null : payment.payment_photo_url);
+          setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null'? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${API_BASE_URL}${payment.payment_photo_url}`): null);
         } else {
           setError('Tidak ada data pembayaran yang ditemukan.');
         }
