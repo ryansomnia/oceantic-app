@@ -340,13 +340,13 @@ export default function MyProfilePage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center px-6 py-3 rounded-full text-lg font-semibold text-white bg-oceanic-blue hover:bg-aqua-accent transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oceanic-blue"
+                  className="flex items-center px-6 py-3 rounded-full text-lg font-semibold text-white bg-sky-500 hover:bg-aqua-accent transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oceanic-blue"
                   disabled={loading}
                 >
                   {loading ? (
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />
                   ) : (
-                    <Save className="h-5 w-5 mr-2" />
+                    <Save className="h-5 w-5 mr-2 " />
                   )}
                   {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
                 </button>

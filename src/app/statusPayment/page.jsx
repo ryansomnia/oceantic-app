@@ -2,23 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import { CircleCheck, CircleAlert, Hourglass, Upload, Loader2, ImageUp } from 'lucide-react';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 
-const MySwal = withReactContent(Swal);
 const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
 const FILE_BASE_URL = "https://api.oceanticsports.com";
-
 
 const StatusPayment = () => {
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('Pending');
   const [paymentPhotoUrl, setPaymentPhotoUrl] = useState(null);
+  const [swimStyles, setSwimStyles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
+  
+  // Ambil token dan userId di luar komponen atau di useEffect
+  const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
   const getStatusDisplay = (status) => {
     switch (status) {
@@ -48,21 +49,18 @@ const StatusPayment = () => {
   };
 
   const fetchPaymentStatus = async () => {
-    const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-    console.log('================userId====================');
-    console.log(userId);
-    console.log('====================================');
-  
     if (!userId) {
       setError('ID pengguna tidak ditemukan. Silakan login kembali.');
       setIsLoading(false);
-      window.location.href = '/login'; 
       return;
     }
   
     try {
-      // Ambil swimmer_registration.id dari user
-      const regRes = await fetch(`${API_BASE_URL}/registrations/getRegistrationByUserId/${userId}`);
+      const regRes = await fetch(`${API_BASE_URL}/registrations/getRegistrationByUserId/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (!regRes.ok) throw new Error('Gagal ambil registrasi user');
   
       const regData = await regRes.json();
@@ -73,47 +71,52 @@ const StatusPayment = () => {
       }
   
       const swimmerRegId = regData.data.id;
-      console.log('==================vswimmerRegId==================');
-      console.log(swimmerRegId);
-      console.log('====================================');
   
-      // Panggil API status pembayaran berdasarkan swimmer_registration.id
-      const response = await fetch(`${API_BASE_URL}/getStatusPaymentById/${swimmerRegId}`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.detail && data.detail.length > 0) {
-          console.log('====================================');
-          console.log(data);
-          console.log('====================================');
-          const payment = data.detail[0];
-          console.log('====================================');
-          console.log(payment);
-          console.log('====================================');
-          setPaymentDetails({
-            id: payment.id,
-            title: payment.title,
-            fullName: payment.full_name,
-            status: payment.payment_status,
-            totalFee: payment.total_fee ?? 0, // ✅ kalau null/undefined -> jadi 0
-            paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null, });
-          setPaymentStatus(payment.payment_status);
-          setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null'? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null);
-        } else {
-          setError('Tidak ada data pembayaran yang ditemukan.');
+      const paymentRes = await fetch(`${API_BASE_URL}/getStatusPaymentById/${swimmerRegId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
+      });
+      if (!paymentRes.ok) throw new Error('Gagal memuat status pembayaran.');
+      const paymentData = await paymentRes.json();
+      if (paymentData.detail && paymentData.detail.length > 0) {
+        const payment = paymentData.detail[0];
+        setPaymentDetails({
+          id: payment.id,
+          title: payment.title,
+          fullName: payment.full_name,
+          status: payment.payment_status,
+          totalFee: payment.total_fee ?? 0,
+          paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null,
+        });
+        setPaymentStatus(payment.payment_status);
+        setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null);
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Gagal memuat status pembayaran.');
+        setError('Tidak ada data pembayaran yang ditemukan.');
       }
+
+      const swimStylesRes = await fetch(`${API_BASE_URL}/getSwimStyles/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!swimStylesRes.ok) throw new Error('Gagal memuat gaya renang.');
+      const swimStylesData = await swimStylesRes.json();
+      if (swimStylesData.code === 200) {
+        setSwimStyles(swimStylesData.data);
+      } else {
+        console.error('Gagal memuat gaya renang:', swimStylesData.message);
+        setSwimStyles([]);
+      }
+
     } catch (err) {
-      console.error('Error fetching payment status:', err);
-      setError('Terjadi kesalahan jaringan atau server saat memuat status pembayaran.');
+      console.error('Error fetching data:', err);
+      setError('Terjadi kesalahan jaringan atau server saat memuat data.');
     } finally {
       setIsLoading(false);
     }
   };
   
-
   useEffect(() => {
     fetchPaymentStatus();
   }, []);
@@ -127,11 +130,13 @@ const StatusPayment = () => {
   };
 
   const handleUploadProof = async () => {
-
-    const token = localStorage.getItem('authToken');
-
     if (!selectedFile) {
-      setUploadMessage('Silakan pilih file bukti pembayaran terlebih dahulu.');
+      window.Swal.fire({
+        title: 'Peringatan',
+        text: 'Silakan pilih file bukti pembayaran terlebih dahulu.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
       return;
     }
   
@@ -146,7 +151,7 @@ const StatusPayment = () => {
       const response = await fetch(`${API_BASE_URL}/uploadPayment`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`
         },
         body: formData,
 
@@ -161,14 +166,12 @@ const StatusPayment = () => {
       }
   
       if (response.ok) {
-        // Menggunakan SweetAlert2 untuk notifikasi sukses
-        MySwal.fire({
+        window.Swal.fire({
           title: 'Sukses!',
           text: data.message || 'Bukti pembayaran berhasil diunggah.',
           icon: 'success',
           confirmButtonText: 'OK',
         }).then(() => {
-          // Memperbarui data setelah SweetAlert ditutup
           fetchPaymentStatus();
         });
 
@@ -176,8 +179,7 @@ const StatusPayment = () => {
         setUploadMessage('');
 
       } else {
-        // Menggunakan SweetAlert2 untuk notifikasi gagal
-        MySwal.fire({
+        window.Swal.fire({
           title: 'Gagal!',
           text: data.message || 'Gagal mengunggah bukti pembayaran.',
           icon: 'error',
@@ -187,7 +189,7 @@ const StatusPayment = () => {
   
     } catch (err) {
       console.error('❌ Upload error:', err);
-      MySwal.fire({
+      window.Swal.fire({
         title: 'Terjadi Kesalahan',
         text: 'Terjadi kesalahan jaringan.',
         icon: 'error',
@@ -215,12 +217,6 @@ const StatusPayment = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8 font-sans text-gray-800">
         <p className="text-red-600 text-lg mb-4 text-center">{error}</p>
-        {/* <button
-          onClick={() => window.location.href = '/login'}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200"
-        >
-          Kembali ke Login
-        </button> */}
       </div>
     );
   }
@@ -249,21 +245,34 @@ const StatusPayment = () => {
               </h2>
               {paymentDetails && (
                 <div className="space-y-4 text-left">
-                <DetailItem label="Judul Event" value={paymentDetails.title} />
-                <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
-                <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
-                <DetailItem 
-  label="Total Biaya" 
-  value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`} 
-/>
-              </div>
-              
-               
+                  <DetailItem label="Judul Event" value={paymentDetails.title} />
+                  <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
+                  <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
+                  <div className="py-4">
+                  <span className="text-gray-500 font-medium block mb-2">Gaya Renang yang Dipilih</span>
+                  <div className="flex flex-wrap gap-2">
+                    {swimStyles.length > 0 ? (
+                      swimStyles.map((style, index) => (
+                        <div key={index} className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full shadow-sm text-sm">
+                          {style.swim_style}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-800 font-semibold">Tidak ada gaya renang yang dipilih.</p>
+                    )}
+                  </div>
+                </div>
+                  <DetailItem 
+                    label="Total Biaya" 
+                    value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`} 
+                  />
+                 
+                </div>
               )}
             </div>
           </div>
 
-          {paymentStatus !== 'Success'  && (
+          {paymentStatus !== 'Success' && (
             <div className="flex-1">
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 h-full flex flex-col justify-between">
                 <div>
