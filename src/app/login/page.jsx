@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image'; // Import komponen Image dari Next.js untuk optimasi gambar
 import { useRouter } from 'next/navigation'; // Untuk navigasi setelah login sukses
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // 👁️ Ikon lihat / sembunyi
 
 export default function LoginPage() {
   const router = useRouter(); // Inisialisasi router untuk pengalihan halaman
@@ -17,6 +18,8 @@ export default function LoginPage() {
   // State untuk pesan notifikasi (sukses/error)
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
 
   // Fungsi untuk menangani perubahan pada input form
   const handleChange = (e) => {
@@ -146,17 +149,27 @@ export default function LoginPage() {
                 onChange={handleChange}
               />
               {/* Input Password */}
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue sm:text-base" /* Warna disesuaikan */
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-              />
+              <div className="relative">
+  <input
+    id="password"
+    name="password"
+    type={showPassword ? 'text' : 'password'} // ganti sesuai toggle
+    autoComplete="current-password"
+    required
+    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-oceanic-blue focus:border-oceanic-blue sm:text-base"
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+  />
+  {/* Tombol toggle */}
+  <button
+    type="button"
+    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </button>
+</div>
             </div>
             {/* Link "Belum punya akun?" dipindahkan ke sini, di bawah input */}
             <p className="mt-4 text-center text-base text-gray-600">

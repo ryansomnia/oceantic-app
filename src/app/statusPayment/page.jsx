@@ -16,8 +16,8 @@ const StatusPayment = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
-  
-  // Ambil token dan userId di luar komponen atau di useEffect
+  const [selectedBank, setSelectedBank] = useState('');
+
   const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
@@ -54,31 +54,36 @@ const StatusPayment = () => {
       setIsLoading(false);
       return;
     }
-  
+
     try {
       const regRes = await fetch(`${API_BASE_URL}/registrations/getRegistrationByUserId/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
+
       if (!regRes.ok) throw new Error('Gagal ambil registrasi user');
-  
+
       const regData = await regRes.json();
       if (regData.code !== 200 || !regData.data) {
+        window.Swal.fire({
+          title: 'Peringatan',
+          text: 'Kamu belum mendaftar event manapun, segera daftarkan dirimu.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
         setError('Tidak ada registrasi ditemukan.');
         setIsLoading(false);
         return;
       }
-  
+
       const swimmerRegId = regData.data.id;
-  
+
+      // ===== Payment status
       const paymentRes = await fetch(`${API_BASE_URL}/getStatusPaymentById/${swimmerRegId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!paymentRes.ok) throw new Error('Gagal memuat status pembayaran.');
       const paymentData = await paymentRes.json();
+
       if (paymentData.detail && paymentData.detail.length > 0) {
         const payment = paymentData.detail[0];
         setPaymentDetails({
@@ -87,25 +92,44 @@ const StatusPayment = () => {
           fullName: payment.full_name,
           status: payment.payment_status,
           totalFee: payment.total_fee ?? 0,
-          paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null,
+          paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null'
+            ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`)
+            : null,
         });
         setPaymentStatus(payment.payment_status);
-        setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null' ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`): null);
+        setPaymentPhotoUrl(payment.payment_photo_url && payment.payment_photo_url !== 'null'
+          ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`)
+          : null);
       } else {
         setError('Tidak ada data pembayaran yang ditemukan.');
       }
 
+      // ===== Swim styles
       const swimStylesRes = await fetch(`${API_BASE_URL}/getSwimStyles/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (!swimStylesRes.ok) throw new Error('Gagal memuat gaya renang.');
+
+      if (!swimStylesRes.ok) {
+        window.Swal.fire({
+          title: 'Peringatan',
+          text: 'Tidak ada gaya renang yang ditemukan untuk akun ini.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
+        setSwimStyles([]);
+        return;
+      }
+
       const swimStylesData = await swimStylesRes.json();
-      if (swimStylesData.code === 200) {
+      if (swimStylesData.code === 200 && swimStylesData.data?.length > 0) {
         setSwimStyles(swimStylesData.data);
       } else {
-        console.error('Gagal memuat gaya renang:', swimStylesData.message);
+        window.Swal.fire({
+          title: 'Peringatan',
+          text: 'Tidak ada gaya renang yang ditemukan untuk akun ini.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
         setSwimStyles([]);
       }
 
@@ -116,7 +140,7 @@ const StatusPayment = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchPaymentStatus();
   }, []);
@@ -139,14 +163,14 @@ const StatusPayment = () => {
       });
       return;
     }
-  
+
     setIsUploading(true);
     setUploadMessage('Mengunggah bukti pembayaran...');
-  
+
     const formData = new FormData();
     formData.append('registration_id', paymentDetails?.id);
     formData.append('payment_photo', selectedFile);
- 
+
     try {
       const response = await fetch(`${API_BASE_URL}/uploadPayment`, {
         method: 'POST',
@@ -154,9 +178,8 @@ const StatusPayment = () => {
           'Authorization': `Bearer ${token}`
         },
         body: formData,
-
       });
-  
+
       const text = await response.text();
       let data;
       try {
@@ -164,7 +187,7 @@ const StatusPayment = () => {
       } catch {
         data = { message: text };
       }
-  
+
       if (response.ok) {
         window.Swal.fire({
           title: 'Sukses!',
@@ -186,7 +209,7 @@ const StatusPayment = () => {
           confirmButtonText: 'OK'
         });
       }
-  
+
     } catch (err) {
       console.error('❌ Upload error:', err);
       window.Swal.fire({
@@ -199,7 +222,7 @@ const StatusPayment = () => {
       setIsUploading(false);
     }
   };
-  
+
   const statusDisplay = getStatusDisplay(paymentStatus);
 
   if (isLoading) {
@@ -249,24 +272,23 @@ const StatusPayment = () => {
                   <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
                   <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
                   <div className="py-4">
-                  <span className="text-gray-500 font-medium block mb-2">Gaya Renang yang Dipilih</span>
-                  <div className="flex flex-wrap gap-2">
-                    {swimStyles.length > 0 ? (
-                      swimStyles.map((style, index) => (
-                        <div key={index} className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full shadow-sm text-sm">
-                          {style.swim_style}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-gray-800 font-semibold">Tidak ada gaya renang yang dipilih.</p>
-                    )}
+                    <span className="text-gray-500 font-medium block mb-2">Gaya Renang yang Dipilih</span>
+                    <div className="flex flex-wrap gap-2">
+                      {swimStyles.length > 0 ? (
+                        swimStyles.map((style, index) => (
+                          <div key={index} className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full shadow-sm text-sm">
+                            {style.swim_style}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-gray-800 font-semibold">Tidak ada gaya renang yang dipilih.</p>
+                      )}
+                    </div>
                   </div>
-                </div>
                   <DetailItem 
                     label="Total Biaya" 
                     value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`} 
                   />
-                 
                 </div>
               )}
             </div>
@@ -352,6 +374,72 @@ const StatusPayment = () => {
                     {isUploading ? 'Mengunggah...' : 'Simpan Bukti Pembayaran'}
                   </button>
                 )}
+
+                {/* Tambahan Instruksi Pembayaran jika status Pending */}
+{/* Instruksi Pembayaran */}
+{paymentStatus === 'Pending' && (
+  <div className="mt-8 bg-white rounded-2xl shadow-md border p-6">
+    <h2 className="text-lg font-bold mb-4 border-b pb-2 text-gray-800">
+      Instruksi Pembayaran
+    </h2>
+
+    {/* Dropdown Pilih Metode */}
+    <div className="mb-6">
+      <label className="block text-sm font-medium text-gray-600 mb-2">
+        Pilih Metode Pembayaran
+      </label>
+      <select
+        className="w-full border rounded-lg p-3 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        value={selectedBank}
+        onChange={(e) => setSelectedBank(e.target.value)}
+      >
+        <option value="" disabled>Pilih Metode</option>
+        <option value="qris">QRIS</option>
+        <option value="bri">Bank BRI</option>
+        <option value="bca">Bank BCA</option>
+        <option value="mandiri">Bank Mandiri</option>
+      </select>
+    </div>
+
+    {/* Konten sesuai pilihan */}
+    {selectedBank === 'qris' && (
+      <div className="text-center">
+        <p className="text-sm text-gray-600 mb-3">Scan QRIS untuk membayar:</p>
+        <div className="flex justify-center">
+          <img
+            src="/qris.jpeg" // ganti dengan file/endpoint QRIS beneran
+            alt="QR Code Pembayaran"
+            className="w-48 h-48 border rounded-xl shadow-lg"
+          />
+        </div>
+      </div>
+    )}
+
+    {selectedBank === 'bri' && (
+      <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
+        <p className="text-sm text-gray-600 mb-1">Bank BRI</p>
+        <p className="font-bold text-gray-800">1234567890 a.n PT Oceantic</p>
+      </div>
+    )}
+
+    {selectedBank === 'bca' && (
+      <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
+        <p className="text-sm text-gray-600 mb-1">Bank BCA</p>
+        <p className="font-bold text-gray-800">9876543210 a.n PT Oceantic</p>
+      </div>
+    )}
+
+    {selectedBank === 'mandiri' && (
+      <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
+        <p className="text-sm text-gray-600 mb-1">Bank Mandiri</p>
+        <p className="font-bold text-gray-800">4567891230 a.n PT Oceantic</p>
+      </div>
+    )}
+  </div>
+)}
+
+
+
               </div>
             </div>
           )}

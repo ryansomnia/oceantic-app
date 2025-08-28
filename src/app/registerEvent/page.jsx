@@ -84,6 +84,9 @@ export default function RegisterSwimmerPage() {
         });
         const data = await res.json();
         if (data.swim_styles && data.races) {
+          console.log('================data.swim_styles====================');
+          console.log(data.races);
+          console.log('====================================');
           setAvailableRaces(data.races);
           setSelectedRaces([]); // reset pilihan tiap ganti event
         } else {

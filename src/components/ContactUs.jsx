@@ -79,10 +79,10 @@ export default function ContactUs() {
         {/* Kolom Kiri: Info Kontak & Tagline */}
         <div className="flex flex-col justify-between">
           <div>
-            <h2 className="text-xl font-light tracking-widest uppercase mb-4">Contact Us</h2>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight uppercase">
-              Wujudkan Mimpimu<br />Untuk menjadi<br />Pemenang
-            </h1>
+            {/* <h2 className="text-xl font-light tracking-widest uppercase mb-4">Contact Us</h2> */}
+            {/* <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight uppercase">
+              Wujudkan Mimpimu<br />Untuk menjadi<br />Pemenang */}
+            {/* </h1> */}
           </div>
           <div className="mt-12 text-sm font-light leading-relaxed">
             <p className="mb-4">
@@ -175,7 +175,7 @@ export default function ContactUs() {
               {isSubmitting ? 'Sending Message...' : 'Send Message'}
             </button>
           </form>
-        </div>
+        </div> 
       </div>
     </section>
   );
