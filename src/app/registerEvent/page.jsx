@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Swal from 'sweetalert2';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import {jwtDecode} from "jwt-decode";
+
 
 export default function RegisterSwimmerPage() {
   const router = useRouter();
@@ -43,9 +45,23 @@ export default function RegisterSwimmerPage() {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
     const userRole = localStorage.getItem('userRole');
-
-    if (!token || !userId || userRole !== 'member') {
-      router.push('/login');
+    if (!token || !userId || userRole !== "member") {
+      router.push("/login");
+      return;
+    }
+  
+    try {
+      const decoded = jwtDecode(token);
+      if (decoded.exp * 1000 < Date.now()) {
+        // token expired
+        localStorage.clear();
+        sessionStorage.clear();
+        router.push("/login");
+        return;
+      }
+    } catch (err) {
+      console.error("Token invalid:", err);
+      router.push("/login");
       return;
     }
 
