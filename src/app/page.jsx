@@ -6,6 +6,7 @@ import Testimonials from '../components/Testimonials';
 import ContactUs from '../components/ContactUs';
 import EventSection from '../components/EventSection';
 import Value from '../components/Value';
+import Sponsorships from '../components/Sponsorship';
 
 export default function HomePage() {
   return (
@@ -17,8 +18,9 @@ export default function HomePage() {
       <EventSection />
       {/* <Achievements /> */}
       <Testimonials />
+      {/* <Sponsorships/> */}
 
-      <ContactUs />
+      {/* <ContactUs /> */}
     </>
   );
 }

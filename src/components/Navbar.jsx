@@ -2,12 +2,16 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import {jwtDecode} from 'jwt-decode';
+import { useRouter, usePathname } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Navbar() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     // Ambil token dari localStorage atau sessionStorage
@@ -54,6 +58,32 @@ export default function Navbar() {
   const handleNavLinkClick = () => {
     setIsMobileMenuOpen(false);
   };
+
+  // --- HYBRID SCROLL HANDLER ---
+  const handleScrollOrRedirect = (e, targetId) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+
+    if (pathname === "/") {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      router.push(`/#${targetId}`);
+    }
+  };
+
+  // Auto-scroll kalau ada hash di URL (/#section)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [pathname]);
 
   return (
     <nav className="bg-white p-4 shadow-lg sticky top-0 z-50">
@@ -133,13 +163,45 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <li><Link href="#about-us" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>About Us</Link></li>
-              <li><Link href="#events" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>Events</Link></li>
-              <li><Link href="#achievements" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>Achievements</Link></li>
-              <li><Link href="#testimonials" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>Testimonials</Link></li>
-              <li><Link href="#contact-us" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>Contact Us</Link></li>
-              <li><Link href="/login" className="bg-sky-300 hover:bg-sky-600 rounded-md text-white py-2 px-3 inline-block" onClick={handleNavLinkClick}>Login</Link></li>
-              <li><Link href="/register" className="border border-sky-900 rounded-md text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>Register</Link></li>
+              <li>
+                <a href="/#about-us" onClick={(e) => handleScrollOrRedirect(e, "about-us")} className="text-black hover:text-sky-300 py-2 px-3 inline-block">
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="/#events" onClick={(e) => handleScrollOrRedirect(e, "events")} className="text-black hover:text-sky-300 py-2 px-3 inline-block">
+                  Events
+                </a>
+              </li>
+              {/* <li>
+                <a href="/#achievements" onClick={(e) => handleScrollOrRedirect(e, "achievements")} className="text-black hover:text-sky-300 py-2 px-3 inline-block">
+                  Achievements
+                </a>
+              </li> */}
+              <li>
+                <a href="/#testimonials" onClick={(e) => handleScrollOrRedirect(e, "testimonials")} className="text-black hover:text-sky-300 py-2 px-3 inline-block">
+                  Testimonials
+                </a>
+              </li>
+              <li>
+              <a
+    href="/#footer"
+    onClick={(e) => handleScrollOrRedirect(e, "footer")}
+    className="text-black hover:text-sky-300 py-2 px-3 inline-block"
+  >
+    Contact Us
+  </a>
+              </li>
+              <li>
+                <Link href="/login" className="bg-sky-300 hover:bg-sky-600 rounded-md text-white py-2 px-3 inline-block" onClick={handleNavLinkClick}>
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/register" className="border border-sky-900 rounded-md text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>
+                  Register
+                </Link>
+              </li>
             </>
           )}
         </ul>

@@ -12,7 +12,7 @@ export default function Hero() {
           <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">
           Bergabung bersama acara olahraga kelas dunia dan pengalaman tak terlupakan bagi atlet dan penggemar.          </p>
           <a 
-            href="#events" 
+            href="/#events" 
             className="bg-sky-300 text-white text-xl font-bold py-4 px-10 rounded-full hover:bg-sky-700 transition duration-300 transform hover:scale-105 shadow-lg"
           >
             Explore Events Terdekat

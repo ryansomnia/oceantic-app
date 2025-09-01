@@ -14,7 +14,7 @@ export default function Sponsorships() {
   ];
 
   return (
-    <section id="sponsorships" className="py-20 bg-gradient-to-r from-sky-700 to-sky-900 text-white">
+    <section id="sponsorships" className="py-20 bg-gradient-to-r bg-white text-white">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-4xl font-extrabold text-white mb-12 relative pb-4">
           <span className="text-cyan-300">Our Valued Sponsors</span>
@@ -43,17 +43,17 @@ export default function Sponsorships() {
           ))}
         </div>
 
-        {/* <div className="mt-16">
+        <div className="mt-16">
           <p className="text-xl font-semibold mb-4">
             Interested in partnering with us?
           </p>
           <a
-            href="#contact"
+            href="https://api.whatsapp.com/send/?phone=62895365089206&text&type=phone_number&app_absent=0"
             className="inline-block bg-cyan-400 hover:bg-cyan-500 text-sky-900 font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             Become a Sponsor
           </a>
-        </div> */}
+        </div>
       </div>
     </section>
   );
