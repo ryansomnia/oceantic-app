@@ -14,7 +14,7 @@ export const metadata = {
     title: "OCEANTIC - Elite Swimming Event Organizer",
     description:
       "Your premier partner for professional swimming events and competitions. Dive into excellence!",
-    url: "https://www.your-oceantic-domain.com", // Ganti dengan domain Anda
+    url: "https://oceanticsports.com", // Ganti dengan domain Anda
     siteName: "OCEANTIC",
     images: [
       {
