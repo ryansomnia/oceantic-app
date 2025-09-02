@@ -395,9 +395,9 @@ const StatusPayment = () => {
       >
         <option value="" disabled>Pilih Metode</option>
         <option value="qris">QRIS</option>
-        <option value="bri">Bank BRI</option>
+        {/* <option value="bri">Bank BRI</option> */}
         <option value="bca">Bank BCA</option>
-        <option value="mandiri">Bank Mandiri</option>
+        {/* <option value="mandiri">Bank Mandiri</option> */}
       </select>
     </div>
 
@@ -425,7 +425,7 @@ const StatusPayment = () => {
     {selectedBank === 'bca' && (
       <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
         <p className="text-sm text-gray-600 mb-1">Bank BCA</p>
-        <p className="font-bold text-gray-800">9876543210 a.n PT Oceantic</p>
+        <p className="font-bold text-gray-800">4910493430 a.n David Christianto</p>
       </div>
     )}
 
