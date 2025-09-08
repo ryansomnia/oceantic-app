@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
 import {jwtDecode} from "jwt-decode";
+import TermsAndConsent from '../../components/TermsAndConsent';
 
 
 export default function RegisterSwimmerPage() {
@@ -225,6 +226,7 @@ export default function RegisterSwimmerPage() {
             <ul style="text-align:left">
               ${chosenRaces.map(r => `<li>${r}</li>`).join('')}
             </ul>
+            <p>Biaya Admin : Rp. 2.500</p>
           `,
           icon: 'success',
           confirmButtonText: 'OK'
@@ -384,10 +386,14 @@ export default function RegisterSwimmerPage() {
               <input id="parentConsent" type="checkbox" name="parent_consent" checked={formData.parent_consent} onChange={handleChange} required className="mt-1 h-4 w-4 text-blue-600 rounded-sm focus:ring-blue-500" />
               <label htmlFor="parentConsent" className="ml-2 block text-sm font-medium text-gray-700">Saya menyatakan saya mendapat izin dari orangtua / wali saya.</label>
             </div>
+            <TermsAndConsent  />
             <div className="flex items-start">
               <input id="rulesConsent" type="checkbox" name="rules_consent" checked={formData.rules_consent} onChange={handleChange} required className="mt-1 h-4 w-4 text-blue-600 rounded-sm focus:ring-blue-500" />
               <label htmlFor="rulesConsent" className="ml-2 block text-sm font-medium text-gray-700">Saya menyetujui aturan lomba.</label>
             </div>
+
+
+
           </div>
 
           <button 

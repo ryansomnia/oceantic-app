@@ -285,6 +285,7 @@ const StatusPayment = () => {
                       )}
                     </div>
                   </div>
+                  <DetailItem label="Biaya Admin" value={'Rp. 2.500'}/>
                   <DetailItem 
                     label="Total Biaya" 
                     value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`} 
@@ -394,7 +395,7 @@ const StatusPayment = () => {
         onChange={(e) => setSelectedBank(e.target.value)}
       >
         <option value="" disabled>Pilih Metode</option>
-        <option value="qris">QRIS</option>
+        {/* <option value="qris">QRIS</option> */}
         {/* <option value="bri">Bank BRI</option> */}
         <option value="bca">Bank BCA</option>
         {/* <option value="mandiri">Bank Mandiri</option> */}

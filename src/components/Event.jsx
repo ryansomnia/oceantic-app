@@ -70,29 +70,32 @@ export default function EventsCarousel() {
   return (
     <div id="events" className="w-full relative overflow-hidden font-sans">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        navigation={{
-          nextEl: ".custom-next",
-          prevEl: ".custom-prev",
-        }}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        loop
-        className="w-full overflow-hidden"
+       modules={[Navigation, Pagination, Autoplay]}
+       navigation={{
+         nextEl: ".custom-next",
+         prevEl: ".custom-prev",
+       }}
+       pagination={{ clickable: true }}
+       autoplay={{ delay: 5000, disableOnInteraction: false }}
+       loop
+       slidesPerView={1.1}   // kasih ruang 10% slide berikut
+       centeredSlides={true} // biar fokus di tengah
+       spaceBetween={20}     // jarak antar slide
+       className="w-full overflow-hidden"
       >
         {events.map((event, idx) => (
           <SwiperSlide key={idx}>
-            <div className="relative w-full h-[500px] md:h-[600px] sm:h-[400px]">
+            <div className="  relative w-full h-[500px] md:h-[600px] sm:h-[400px]">
               {/* Background with gradient overlay */}
               <div
-                className="absolute inset-0 bg-cover bg-center"
+                className="m-4  rounded-4xl absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: "url('/images/swim.jpg')" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+                <div className="rounded-4xl absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
               </div>
 
               {/* Content */}
-              <div className="relative z-10 w-full h-full flex items-center justify-center px-4 sm:px-8 text-center">
+              <div className=" relative z-10 w-full h-full flex items-center justify-center px-4 sm:px-8 text-center">
                 <div className="max-w-3xl md:max-w-4xl text-white">
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 leading-snug sm:leading-tight drop-shadow-2xl">
                     {event.title}
