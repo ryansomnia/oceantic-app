@@ -8,7 +8,11 @@ export default function AboutUs() {
           </h2>
           <div className="max-w-4xl mx-auto text-lg leading-relaxed">
             <p className="mb-6">
-            Kami adalah tim yang bergerak di bidang manajemen event olahraga, khususnya lomba renang pelajar. Kami berkomitmen mendukung pembinaan atlet muda sejak dini melalui penyelenggaraan event yang profesional, modern, dan berdampak, sekaligus membangun ekosistem kolaboratif bersama sekolah, komunitas, klub olahraga, serta mitra sponsor demi mencetak generasi berprestasi dengan karakter, disiplin, dan visi masa depan.</p>
+            Kami adalah tim yang bergerak di bidang manajemen event olahraga, 
+            khususnya lomba renang pelajar. Kami berkomitmen mendukung pembinaan atlet muda sejak dini
+             melalui penyelenggaraan event yang profesional, modern, dan berdampak, sekaligus membangun
+              ekosistem kolaboratif bersama sekolah, komunitas, klub olahraga, serta mitra sponsor demi 
+              mencetak generasi berprestasi dengan karakter, disiplin, dan visi masa depan.</p>
 
             </div>
         </div>

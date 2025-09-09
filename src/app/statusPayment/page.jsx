@@ -91,6 +91,8 @@ const StatusPayment = () => {
           title: payment.title,
           fullName: payment.full_name,
           status: payment.payment_status,
+          age_group_class: payment.age_group_class,
+
           totalFee: payment.total_fee ?? 0,
           paymentPhotoUrl: payment.payment_photo_url && payment.payment_photo_url !== 'null'
             ? (payment.payment_photo_url.startsWith('http') ? payment.payment_photo_url : `${FILE_BASE_URL}${payment.payment_photo_url}`)
@@ -270,6 +272,9 @@ const StatusPayment = () => {
                 <div className="space-y-4 text-left">
                   <DetailItem label="Judul Event" value={paymentDetails.title} />
                   <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
+                  <DetailItem label="Kelompok Umur" value={paymentDetails.age_group_class} />
+
+                  
                   <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
                   <div className="py-4">
                     <span className="text-gray-500 font-medium block mb-2">Gaya Renang yang Dipilih</span>
