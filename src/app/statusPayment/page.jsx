@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { CircleCheck, CircleAlert, Hourglass, Upload, Loader2, ImageUp } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
 const FILE_BASE_URL = "https://api.oceanticsports.com";
@@ -15,6 +16,7 @@ const StatusPayment = () => {
   const [error, setError] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
   const [selectedBank, setSelectedBank] = useState('');
 
@@ -59,12 +61,21 @@ const StatusPayment = () => {
       const regRes = await fetch(`${API_BASE_URL}/registrations/getRegistrationByUserId/${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-
+      if (regRes.status === 404) {
+        setError('NO_EVENT');
+        setIsLoading(false);
+        return;
+      }
       if (!regRes.ok) throw new Error('Gagal ambil registrasi user');
 
       const regData = await regRes.json();
+      if (regData.code === 404) {
+        setError('NO_EVENT');
+        setIsLoading(false);
+        return;
+      }
       if (regData.code !== 200 || !regData.data) {
-        window.Swal.fire({
+        Swal.fire({
           title: 'Peringatan',
           text: 'Kamu belum mendaftar event manapun, segera daftarkan dirimu.',
           icon: 'warning',
@@ -112,7 +123,7 @@ const StatusPayment = () => {
       });
 
       if (!swimStylesRes.ok) {
-        window.Swal.fire({
+        Swal.fire({
           title: 'Peringatan',
           text: 'Tidak ada gaya renang yang ditemukan untuk akun ini.',
           icon: 'warning',
@@ -126,7 +137,7 @@ const StatusPayment = () => {
       if (swimStylesData.code === 200 && swimStylesData.data?.length > 0) {
         setSwimStyles(swimStylesData.data);
       } else {
-        window.Swal.fire({
+        Swal.fire({
           title: 'Peringatan',
           text: 'Tidak ada gaya renang yang ditemukan untuk akun ini.',
           icon: 'warning',
@@ -157,7 +168,7 @@ const StatusPayment = () => {
 
   const handleUploadProof = async () => {
     if (!selectedFile) {
-      window.Swal.fire({
+      Swal.fire({
         title: 'Peringatan',
         text: 'Silakan pilih file bukti pembayaran terlebih dahulu.',
         icon: 'warning',
@@ -191,7 +202,7 @@ const StatusPayment = () => {
       }
 
       if (response.ok) {
-        window.Swal.fire({
+        Swal.fire({
           title: 'Sukses!',
           text: data.message || 'Bukti pembayaran berhasil diunggah.',
           icon: 'success',
@@ -204,7 +215,7 @@ const StatusPayment = () => {
         setUploadMessage('');
 
       } else {
-        window.Swal.fire({
+        Swal.fire({
           title: 'Gagal!',
           text: data.message || 'Gagal mengunggah bukti pembayaran.',
           icon: 'error',
@@ -214,7 +225,7 @@ const StatusPayment = () => {
 
     } catch (err) {
       console.error('❌ Upload error:', err);
-      window.Swal.fire({
+      Swal.fire({
         title: 'Terjadi Kesalahan',
         text: 'Terjadi kesalahan jaringan.',
         icon: 'error',
@@ -239,12 +250,26 @@ const StatusPayment = () => {
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8 font-sans text-gray-800">
-        <p className="text-red-600 text-lg mb-4 text-center">{error}</p>
-      </div>
-    );
-  }
+    if (error === 'NO_EVENT') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8 font-sans text-gray-800">
+          <p className="text-blue-600 text-xl font-bold mb-4 text-center">
+            Anda belum mendaftar di Event manapun
+          </p>
+          <p className="text-gray-600 text-center">Silakan lakukan pendaftaran event terlebih dahulu.</p>
+        </div>
+      );
+    }
+  
+    if (error === 'GENERAL_ERROR') {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8 font-sans text-gray-800">
+          <p className="text-red-600 text-lg mb-4 text-center">
+            Terjadi kesalahan jaringan atau server saat memuat data.
+          </p>
+        </div>
+      );
+    }}
 
   return (
     <div className="min-h-screen p-4 sm:p-8 bg-gray-100 flex items-center justify-center font-sans text-gray-800">
