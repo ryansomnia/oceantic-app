@@ -288,41 +288,136 @@ const StatusPayment = () => {
                 <p className="text-sm text-gray-600">{statusDisplay.message}</p>
               </div>
             </div>
+{/* <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 h-full">
+  <h2 className="text-lg font-bold mb-4 border-b pb-2 text-gray-800">
+    Detail Pembayaran
+  </h2>
+  {paymentDetails && (
+    <div className="space-y-4 text-left">
+      <DetailItem label="Judul Event" value={paymentDetails.title} />
+      <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
+      <DetailItem label="Kelompok Umur" value={paymentDetails.age_group_class} />
+      <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
 
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 h-full">
-              <h2 className="text-lg font-bold mb-4 border-b pb-2 text-gray-800">
-                Detail Pembayaran
-              </h2>
-              {paymentDetails && (
-                <div className="space-y-4 text-left">
-                  <DetailItem label="Judul Event" value={paymentDetails.title} />
-                  <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
-                  <DetailItem label="Kelompok Umur" value={paymentDetails.age_group_class} />
+      <div className="py-4">
+        <span className="text-gray-500 font-medium block mb-2">
+          Gaya Renang yang Dipilih
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {swimStyles.length > 0 ? (
+            swimStyles.map((style, index) => (
+              <div
+                key={index}
+                className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full shadow-sm text-sm"
+              >
+                {style.swim_style}
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-800 font-semibold">
+              Tidak ada gaya renang yang dipilih.
+            </p>
+          )}
+        </div>
+      </div>
 
-                  
-                  <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
-                  <div className="py-4">
-                    <span className="text-gray-500 font-medium block mb-2">Gaya Renang yang Dipilih</span>
-                    <div className="flex flex-wrap gap-2">
-                      {swimStyles.length > 0 ? (
-                        swimStyles.map((style, index) => (
-                          <div key={index} className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full shadow-sm text-sm">
-                            {style.swim_style}
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-gray-800 font-semibold">Tidak ada gaya renang yang dipilih.</p>
-                      )}
-                    </div>
-                  </div>
-                  <DetailItem label="Biaya Admin" value={'Rp. 2.500'}/>
-                  <DetailItem 
-                    label="Total Biaya" 
-                    value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`} 
-                  />
+      <DetailItem label="Biaya Admin" value="Rp. 2.500" />
+      <DetailItem
+        label="Total Biaya"
+        value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`}
+      />
+
+      {paymentStatus === "Success" && (
+        <div className="mt-6 bg-white rounded-xl border p-5 shadow-sm text-center">
+          <h3 className="text-md font-bold text-gray-800 mb-3">
+            Gabung ke Grup WhatsApp Peserta
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Scan QR code berikut untuk masuk ke grup WA peserta event:
+          </p>
+          <div className="flex justify-center">
+            <img
+              src="/wagrup.png"
+              alt="QR Code Grup WhatsApp"
+              className="w-40 h-40 border rounded-xl shadow-md"
+            />
+          </div>
+          <p className="text-xs text-gray-500 mt-3">
+            Pastikan kamu sudah menyelesaikan pembayaran sebelum bergabung ke grup.
+          </p>
+        </div>
+      )}
+    </div>
+  )}
+</div> */}
+<div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+  <h2 className="text-lg font-bold mb-4 border-b pb-2 text-gray-800">
+    Detail Pembayaran
+  </h2>
+
+  {paymentDetails && (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Kolom kiri: Detail */}
+      <div className="space-y-4 text-left">
+        <DetailItem label="Judul Event" value={paymentDetails.title} />
+        <DetailItem label="Nama Lengkap" value={paymentDetails.fullName} />
+        <DetailItem label="Kelompok Umur" value={paymentDetails.age_group_class} />
+        <DetailItem label="Status Pembayaran" value={paymentDetails.status} />
+
+        {/* Gaya renang */}
+        <div className="py-4">
+          <span className="text-gray-500 font-medium block mb-2">
+            Gaya Renang yang Dipilih
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {swimStyles.length > 0 ? (
+              swimStyles.map((style, index) => (
+                <div
+                  key={index}
+                  className="px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full shadow-sm text-sm"
+                >
+                  {style.swim_style}
                 </div>
-              )}
-            </div>
+              ))
+            ) : (
+              <p className="text-gray-800 font-semibold">
+                Tidak ada gaya renang yang dipilih.
+              </p>
+            )}
+          </div>
+        </div>
+
+        <DetailItem label="Biaya Admin" value="Rp. 2.500" />
+        <DetailItem
+          label="Total Biaya"
+          value={`Rp ${(paymentDetails.totalFee || 0).toLocaleString("id-ID")}`}
+        />
+      </div>
+
+      {/* Kolom kanan: QR WhatsApp */}
+      {paymentStatus === "Success" && (
+        <div className="flex flex-col items-center justify-center bg-white rounded-xl border p-5 shadow-sm text-center">
+          <h3 className="text-md font-bold text-gray-800 mb-3">
+            Grup WhatsApp Peserta
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Scan QR code berikut untuk masuk ke grup WA peserta event:
+          </p>
+          <img
+            src="/wagrup.png"
+            alt="QR Code Grup WhatsApp"
+            className="w-48 h-48 border rounded-xl shadow-md"
+          />
+          <p className="text-xs text-gray-500 mt-3">
+            Pastikan pembayaran sudah dikonfirmasi sebelum bergabung.
+          </p>
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
+
           </div>
 
           {paymentStatus !== 'Success' && (
