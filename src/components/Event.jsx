@@ -89,7 +89,7 @@ export default function EventsCarousel() {
               {/* Background with gradient overlay */}
               <div
                 className="m-4  rounded-4xl absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('/images/swim.jpg')" }}
+                style={{ backgroundImage: "url('/images/oceanticEvent.jpg')" }}
               >
                 <div className="rounded-4xl absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
               </div>
