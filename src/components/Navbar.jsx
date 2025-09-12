@@ -98,7 +98,7 @@ export default function Navbar() {
     width={100} 
     height={10} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain" 
+    className="block h-auto w-[100px] md:w-[160px] object-contain  mr-3" 
   />
    <Image 
     src="/images/logofoundation.png" 
@@ -106,7 +106,7 @@ export default function Navbar() {
     width={100} 
     height={10} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain mr-3" 
+    className="block h-auto w-[100px] md:w-[160px] object-contain" 
   /> 
 </Link>
 

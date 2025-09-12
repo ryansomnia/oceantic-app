@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import AuthWrapper from "../components/AuthWrapper"; // client wrapper
 
 export const metadata = {
+  metadataBase: new URL("https://oceanticsports.com"), // ✅ Tambahkan ini
   title: "OCEANTIC - Elite Swimming Event Organizer",
   description:
     "Your premier partner for professional swimming events and competitions. Dive into excellence!",
@@ -14,7 +15,7 @@ export const metadata = {
     title: "OCEANTIC - Elite Swimming Event Organizer",
     description:
       "Your premier partner for professional swimming events and competitions. Dive into excellence!",
-    url: "https://oceanticsports.com", // Ganti dengan domain Anda
+    url: "https://oceanticsports.com",
     siteName: "OCEANTIC",
     images: [
       {

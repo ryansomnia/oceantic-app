@@ -18,7 +18,7 @@ export default function Footer() {
     width={160} 
     height={60} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain" 
+    className="block h-auto w-[100px] md:w-[160px] object-contain  mr-3" 
   />
    <Image 
     src="/images/logofoundation.png" 
@@ -26,7 +26,7 @@ export default function Footer() {
     width={160} 
     height={60} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain mr-3" 
+    className="block h-auto w-[100px] md:w-[160px] object-contain" 
   /> 
 </Link>
           <p className="mt-3 text-sm leading-relaxed text-black">
