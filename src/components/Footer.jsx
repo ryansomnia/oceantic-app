@@ -12,13 +12,13 @@ export default function Footer() {
         <div>
         <Link href="/" className="flex items-center">
        
-  <Image 
+        <Image 
     src="/images/logo.png" 
     alt="Oceantic Logo" 
     width={100} 
     height={10} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain mr-5" 
+    className="block h-[60] w-[100px] md:w-[160px] object-contain  mr-3" 
   />
    <Image 
     src="/images/logofoundation.png" 
@@ -26,7 +26,7 @@ export default function Footer() {
     width={100} 
     height={10} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain" 
+    className="block h-[60] w-[100px] md:w-[160px] object-contain" 
   /> 
 </Link>
           <p className="mt-3 text-sm leading-relaxed text-black">
