@@ -15,16 +15,16 @@ export default function Footer() {
   <Image 
     src="/images/logo.png" 
     alt="Oceantic Logo" 
-    width={160} 
-    height={60} 
+    width={100} 
+    height={10} 
     priority
-    className="block h-auto w-[100px] md:w-[160px] object-contain  mr-3" 
+    className="block h-auto w-[100px] md:w-[160px] object-contain mr-5" 
   />
    <Image 
     src="/images/logofoundation.png" 
     alt="Oceantic Logo" 
-    width={160} 
-    height={60} 
+    width={100} 
+    height={10} 
     priority
     className="block h-auto w-[100px] md:w-[160px] object-contain" 
   /> 
