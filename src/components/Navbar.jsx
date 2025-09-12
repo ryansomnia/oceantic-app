@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image'; // ⬅️ tambahkan import ini
+
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
@@ -88,9 +90,16 @@ export default function Navbar() {
   return (
     <nav className="bg-white p-4 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center relative">
-        <Link href="/" className="text-black text-3xl font-bold">
-          OCEANTIC
-        </Link>
+      <Link href="/" className="flex items-center">
+  <Image 
+    src="/images/logo.png" 
+    alt="Oceantic Logo" 
+    width={160} 
+    height={60} 
+    priority
+    className="block h-auto w-[100px] md:w-[160px] object-contain" 
+  />
+</Link>
 
         {/* Hamburger Menu */}
         <button

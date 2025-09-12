@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image'; // ⬅️ tambahkan import ini
+
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Footer() {
@@ -8,12 +10,16 @@ export default function Footer() {
         
         {/* Logo & Address */}
         <div>
-          <Link 
-            href="/" 
-            className="text-3xl font-extrabold tracking-wide hover:text-sky-700 transition duration-300"
-          >
-            OCEANTIC
-          </Link>
+        <Link href="/" className="flex items-center">
+  <Image 
+    src="/images/logo.png" 
+    alt="Oceantic Logo" 
+    width={160} 
+    height={60} 
+    priority
+    className="block h-auto w-[100px] md:w-[160px] object-contain" 
+  />
+</Link>
           <p className="mt-3 text-sm leading-relaxed text-black">
             &copy; {new Date().getFullYear()} OCEANTIC. All rights reserved.
           </p>
