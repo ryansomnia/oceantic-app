@@ -91,14 +91,23 @@ export default function Navbar() {
     <nav className="bg-white p-4 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center relative">
       <Link href="/" className="flex items-center">
-  <Image 
+         
+      <Image 
     src="/images/logo.png" 
     alt="Oceantic Logo" 
-    width={160} 
-    height={60} 
+    width={100} 
+    height={10} 
     priority
     className="block h-auto w-[100px] md:w-[160px] object-contain" 
   />
+   <Image 
+    src="/images/logofoundation.png" 
+    alt="Oceantic Logo" 
+    width={100} 
+    height={10} 
+    priority
+    className="block h-auto w-[100px] md:w-[160px] object-contain mr-3" 
+  /> 
 </Link>
 
         {/* Hamburger Menu */}
