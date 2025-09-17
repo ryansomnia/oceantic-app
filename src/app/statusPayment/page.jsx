@@ -544,21 +544,21 @@ const StatusPayment = () => {
     {selectedBank === 'bri' && (
       <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
         <p className="text-sm text-gray-600 mb-1">Bank BRI</p>
-        <p className="font-bold text-gray-800">1234567890 a.n PT Oceantic</p>
+        <p className="font-bold text-gray-800">1234567890 a.n OCEANTIC CAHAYA ABADI PT</p>
       </div>
     )}
 
     {selectedBank === 'bca' && (
       <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
         <p className="text-sm text-gray-600 mb-1">Bank BCA</p>
-        <p className="font-bold text-gray-800">4910493430 a.n David Christianto</p>
+        <p className="font-bold text-gray-800">0700460738 a.n OCEANTIC CAHAYA ABADI PT</p>
       </div>
     )}
 
     {selectedBank === 'mandiri' && (
       <div className="bg-gray-50 rounded-xl p-5 shadow-sm border mb-3">
         <p className="text-sm text-gray-600 mb-1">Bank Mandiri</p>
-        <p className="font-bold text-gray-800">4567891230 a.n PT Oceantic</p>
+        <p className="font-bold text-gray-800">4567891230 a.n OCEANTIC CAHAYA ABADI PT</p>
       </div>
     )}
   </div>
