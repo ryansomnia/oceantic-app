@@ -500,6 +500,14 @@ const StatusPayment = () => {
                     {isUploading ? 'Mengunggah...' : 'Simpan Bukti Pembayaran'}
                   </button>
                 )}
+<div className="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
+  <p className="text-sm text-yellow-800 font-medium">
+    <span className="font-bold">Catatan Penting:</span> Bagi orang tua atau klub yang melakukan transfer, 
+    mohon mencantumkan <span className="underline">Nama Peserta</span> pada kolom keterangan/berita transfer.
+    <br />
+    Contoh: <span className="italic">OCEANTIC - Budi Setiawan</span>
+  </p>
+</div>
 
                 {/* Tambahan Instruksi Pembayaran jika status Pending */}
 {/* Instruksi Pembayaran */}
