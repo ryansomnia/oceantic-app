@@ -151,7 +151,7 @@ export default function Navbar() {
                 </span>
               </li>
               <li>
-                <Link href="/registerEvent" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>
+                <Link href="/registrationClosed" className="text-black hover:text-sky-300 py-2 px-3 inline-block" onClick={handleNavLinkClick}>
                   Registrasi
                 </Link>
               </li>
