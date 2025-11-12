@@ -14,7 +14,7 @@ export default function HomePage() {
       <Hero />
       <AboutUs />
       <Value />
-      <Events />
+      {/* <Events /> */}
       {/* <EventSection /> */}
       {/* <Achievements /> */}
       <Testimonials />
