@@ -12,7 +12,7 @@ import "moment/locale/id";
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
+const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
 
 export default function AchievementCarousel() {
   const router = useRouter();

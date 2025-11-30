@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { CircleCheck, CircleAlert, Hourglass, Upload, Loader2, ImageUp } from 'lucide-react';
 import Swal from 'sweetalert2';
 
-const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
-const FILE_BASE_URL = "https://api.oceanticsports.com";
+const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
+const FILE_BASE_URL = "http://localhost:3025";
 
 const StatusPayment = () => {
   const [paymentDetails, setPaymentDetails] = useState(null);

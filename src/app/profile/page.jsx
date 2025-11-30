@@ -24,7 +24,7 @@ export default function MyProfilePage() {
     newPassword: ''
   });
 
-  const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
+  const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
 
   useEffect(() => {
     const fetchUserProfile = async () => {

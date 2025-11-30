@@ -16,7 +16,7 @@ export default function HomePage() {
       <Value />
       <Events />
       {/* <EventSection /> */}
-      {/* <Achievements /> */}
+      <Achievements />
       <Testimonials />
       {/* <Sponsorships/> */}
 

@@ -15,7 +15,7 @@ import {
 // Contoh: <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 // sehingga fungsi Swal tersedia secara global.
 
-const API_BASE_URL = "https://api.oceanticsports.com/oceantic/v1";
+const API_BASE_URL = "http://localhost:3025/oceantic/v1";
 
 export default function BukuAcara() {
   const [events, setEvents] = useState([]);

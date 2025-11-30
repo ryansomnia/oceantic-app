@@ -54,7 +54,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch('https://api.oceanticsports.com/oceantic/v1/register', {
+      const response = await fetch('http://localhost:3025/oceantic/v1/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

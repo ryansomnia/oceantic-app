@@ -39,7 +39,7 @@ export default function RegisterSwimmerPage() {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const API_BASE_URL = 'https://api.oceanticsports.com/oceantic/v1';
+  const API_BASE_URL = 'http://localhost:3025/oceantic/v1';
 
   // Fetch events
   useEffect(() => {
